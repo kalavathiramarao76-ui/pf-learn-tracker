@@ -10,13 +10,16 @@ import { ProgressTracker } from '../components/ProgressTracker';
 import { Recommendations } from '../components/Recommendations';
 import { DiscussionForum } from '../components/DiscussionForum';
 import { CreatePathwayModal } from '../components/CreatePathwayModal';
+import { CustomizePathwayModal } from '../components/CustomizePathwayModal';
 
 export default function LearningPathPage() {
   const router = useRouter();
-  const { pathways, addPathway, removePathway } = usePathways();
+  const { pathways, addPathway, removePathway, updatePathway } = usePathways();
   const { getLocalStorage, setLocalStorage } = useLocalStorage();
   const [selectedPathway, setSelectedPathway] = useState<LearningPathway | null>(null);
   const [isCreatePathwayModalOpen, setIsCreatePathwayModalOpen] = useState(false);
+  const [isCustomizePathwayModalOpen, setIsCustomizePathwayModalOpen] = useState(false);
+  const [customizingPathway, setCustomizingPathway] = useState<LearningPathway | null>(null);
 
   useEffect(() => {
     const storedPathways = getLocalStorage('pathways');
@@ -40,12 +43,27 @@ export default function LearningPathPage() {
     setIsCreatePathwayModalOpen(false);
   };
 
+  const handleCustomizePathway = (pathway: LearningPathway) => {
+    setCustomizingPathway(pathway);
+    setIsCustomizePathwayModalOpen(true);
+  };
+
+  const handleUpdatePathway = (updatedPathway: LearningPathway) => {
+    updatePathway(updatedPathway);
+    setLocalStorage('pathways', pathways);
+    setIsCustomizePathwayModalOpen(false);
+  };
+
   const handleOpenCreatePathwayModal = () => {
     setIsCreatePathwayModalOpen(true);
   };
 
   const handleCloseCreatePathwayModal = () => {
     setIsCreatePathwayModalOpen(false);
+  };
+
+  const handleCloseCustomizePathwayModal = () => {
+    setIsCustomizePathwayModalOpen(false);
   };
 
   return (
@@ -66,6 +84,7 @@ export default function LearningPathPage() {
             pathway={pathway}
             onSelect={handleSelectPathway}
             onRemove={handleRemovePathway}
+            onCustomize={handleCustomizePathway}
           />
         ))}
       </div>
@@ -80,6 +99,13 @@ export default function LearningPathPage() {
         <CreatePathwayModal
           onClose={handleCloseCreatePathwayModal}
           onCreatePathway={handleCreatePathway}
+        />
+      )}
+      {isCustomizePathwayModalOpen && customizingPathway && (
+        <CustomizePathwayModal
+          onClose={handleCloseCustomizePathwayModal}
+          pathway={customizingPathway}
+          onUpdatePathway={handleUpdatePathway}
         />
       )}
     </div>

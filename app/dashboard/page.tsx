@@ -70,16 +70,23 @@ export default function DashboardPage() {
     }
   };
 
-  const getFilteredSortedPathways = (pathways) => {
-    if (filterBy === 'all') {
-      return getSortedPathways(pathways);
-    } else if (filterBy === 'recommended') {
-      return getSortedPathways(pathways.filter((pathway) => recommendedPathways.includes(pathway)));
-    } else if (filterBy === 'completed') {
-      return getSortedPathways(pathways.filter((pathway) => completedPathways.includes(pathway)));
-    } else {
-      return getSortedPathways(pathways);
+  const getFilteredPathways = (pathways) => {
+    switch (filterBy) {
+      case 'all':
+        return pathways;
+      case 'recommended':
+        return pathways.filter((pathway) => recommendedPathways.includes(pathway.id));
+      case 'completed':
+        return pathways.filter((pathway) => completedPathways.includes(pathway.id));
+      default:
+        return pathways;
     }
+  };
+
+  const applyFiltersAndSorting = (pathways) => {
+    const filtered = getFilteredPathways(pathways);
+    const sorted = getSortedPathways(filtered);
+    return sorted;
   };
 
   const handleFilterChange = (event) => {
@@ -123,14 +130,12 @@ export default function DashboardPage() {
         <option value="desc">Descending</option>
       </select>
       <ul>
-        {getFilteredSortedPathways(filteredPathways).map((pathway) => (
+        {applyFiltersAndSorting(filteredPathways).map((pathway) => (
           <li key={pathway.id}>
             <Link href={`/learning-path/${pathway.id}`}>
-              <a>
-                {pathway.name}
-                <ArrowRightIcon />
-              </a>
+              {pathway.name}
             </Link>
+            <ArrowRightIcon />
           </li>
         ))}
       </ul>

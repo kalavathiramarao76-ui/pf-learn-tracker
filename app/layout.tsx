@@ -45,13 +45,42 @@ export default function RootLayout({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Learn Tracker - Transform Your Career with Personalized Learning" />
         <meta name="twitter:description" content="Take the first step towards unlocking your potential with our personalized learning pathways, expert-led courses, and supportive community." />
-        <meta name="twitter:image" content="/og-image.png" />
-        <meta name="twitter:site" content="@LearnTracker" />
-        <meta name="twitter:creator" content="@LearnTracker" />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="Learn Tracker" />
-        <meta name="copyright" content="2024 Learn Tracker" />
-        <meta name="canonical" content="https://learn-tracker.com" />
+        <meta name="twitter:image" content="/twitter-image.png" />
+        <meta name="twitter:site" content="@learntracker" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "Learn Tracker",
+              "description": "A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills.",
+              "url": "https://learn-tracker.com",
+              "image": "/og-image.png",
+              "sameAs": [
+                "https://www.facebook.com/learntracker",
+                "https://www.twitter.com/learntracker",
+                "https://www.linkedin.com/company/learntracker"
+              ]
+            }
+          `}
+        </script>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Course",
+              "name": "Personalized Learning Pathways",
+              "description": "Discover a world of limitless learning opportunities with our adaptive learning platform, featuring expert-led courses, personalized recommendations, and a supportive community to help you achieve your goals.",
+              "image": "/og-image.png",
+              "url": "https://learn-tracker.com/personalized-learning-pathways",
+              "provider": {
+                "@type": "EducationalOrganization",
+                "name": "Learn Tracker",
+                "url": "https://learn-tracker.com"
+              }
+            }
+          `}
+        </script>
       </Head>
       <body>
         <Header />

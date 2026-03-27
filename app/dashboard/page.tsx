@@ -22,6 +22,8 @@ export default function DashboardPage() {
   const [availableModules, setAvailableModules] = useState([]);
   const [completedPathways, setCompletedPathways] = useState([]);
   const [isCreatingPathway, setIsCreatingPathway] = useState(false);
+  const [certificateModalOpen, setCertificateModalOpen] = useState(false);
+  const [certificatePathway, setCertificatePathway] = useState(null);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
@@ -80,19 +82,31 @@ export default function DashboardPage() {
       description: newPathwayDescription,
       modules: newPathwayModules,
     };
-    setCustomPathways([...customPathways, newPathway]);
-    setNewPathwayName('');
-    setNewPathwayDescription('');
-    setNewPathwayModules([]);
-    setIsCreatingPathway(false);
+    // Add new pathway to the list of pathways
+    // ...
   };
 
-  const handleAddModule = (module) => {
-    setNewPathwayModules([...newPathwayModules, module]);
+  const handleViewCertificate = (pathway) => {
+    setCertificatePathway(pathway);
+    setCertificateModalOpen(true);
   };
 
-  const handleRemoveModule = (moduleId) => {
-    setNewPathwayModules(newPathwayModules.filter((module) => module.id !== moduleId));
+  const handleDownloadCertificate = () => {
+    const certificateHtml = `
+      <html>
+        <body>
+          <h1>Certificate of Completion</h1>
+          <p>Congratulations on completing the ${certificatePathway.name} pathway!</p>
+          <p>This certificate is awarded to you for your hard work and dedication.</p>
+        </body>
+      </html>
+    `;
+    const certificateBlob = new Blob([certificateHtml], { type: 'application/pdf' });
+    const certificateUrl = URL.createObjectURL(certificateBlob);
+    const a = document.createElement('a');
+    a.href = certificateUrl;
+    a.download = `${certificatePathway.name}-certificate.pdf`;
+    a.click();
   };
 
   return (
@@ -109,66 +123,23 @@ export default function DashboardPage() {
         {filteredPathways.map((pathway) => (
           <li key={pathway.id}>
             <Link href={`/learning-path/${pathway.id}`}>
-              {pathway.name}
+              <a>
+                {pathway.name}
+                {completedPathways.includes(pathway) && (
+                  <button onClick={() => handleViewCertificate(pathway)}>View Certificate</button>
+                )}
+              </a>
             </Link>
           </li>
         ))}
       </ul>
-      <h2>Recommended Pathways</h2>
-      <ul>
-        {recommendedPathways.map((pathway) => (
-          <li key={pathway.id}>
-            <Link href={`/learning-path/${pathway.id}`}>
-              {pathway.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <h2>Custom Pathways</h2>
-      <ul>
-        {customPathways.map((pathway) => (
-          <li key={pathway.id}>
-            <Link href={`/learning-path/${pathway.id}`}>
-              {pathway.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <button onClick={() => setIsCreatingPathway(true)}>Create Custom Pathway</button>
-      {isCreatingPathway && (
+      {certificateModalOpen && (
         <div>
-          <input
-            type="text"
-            value={newPathwayName}
-            onChange={(e) => setNewPathwayName(e.target.value)}
-            placeholder="Pathway name"
-          />
-          <input
-            type="text"
-            value={newPathwayDescription}
-            onChange={(e) => setNewPathwayDescription(e.target.value)}
-            placeholder="Pathway description"
-          />
-          <h3>Available Modules</h3>
-          <ul>
-            {availableModules.map((module) => (
-              <li key={module.id}>
-                <button onClick={() => handleAddModule(module)}>
-                  Add {module.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <h3>Selected Modules</h3>
-          <ul>
-            {newPathwayModules.map((module) => (
-              <li key={module.id}>
-                {module.name}
-                <button onClick={() => handleRemoveModule(module.id)}>Remove</button>
-              </li>
-            ))}
-          </ul>
-          <button onClick={handleCreatePathway}>Create Pathway</button>
+          <h2>Certificate of Completion</h2>
+          <p>Congratulations on completing the {certificatePathway.name} pathway!</p>
+          <p>This certificate is awarded to you for your hard work and dedication.</p>
+          <button onClick={handleDownloadCertificate}>Download Certificate</button>
+          <button onClick={() => setCertificateModalOpen(false)}>Close</button>
         </div>
       )}
     </div>

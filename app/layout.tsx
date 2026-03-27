@@ -44,15 +44,38 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Learn Tracker - Transform Your Career with Personalized Learning" />
-        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay ahead in your field." />
-        <meta name="twitter:image" content="/twitter-image.png" />
-        <meta name="twitter:site" content="@learntracker" />
-        <meta property="fb:app_id" content="YOUR_APP_ID" />
-        <meta property="fb:admins" content="YOUR_ADMIN_ID" />
-        <link rel="canonical" href="https://learn-tracker.com" />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="Learn Tracker" />
-        <meta name="copyright" content="2024 Learn Tracker" />
+        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay ahead in your career." />
+        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:site" content="@LearnTracker" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "Learn Tracker",
+              "description": "A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills.",
+              "image": "/og-image.png",
+              "url": "https://learn-tracker.com",
+              "sameAs": [
+                "https://www.facebook.com/LearnTracker",
+                "https://twitter.com/LearnTracker",
+                "https://www.linkedin.com/company/LearnTracker"
+              ]
+            }
+          `}
+        </script>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "Learn Tracker - Personalized Learning Pathways",
+              "description": "Discover a world of limitless learning opportunities with our adaptive learning platform, featuring expert-led courses, personalized recommendations, and a supportive community to help you achieve your goals.",
+              "image": "/og-image.png",
+              "url": "https://learn-tracker.com"
+            }
+          `}
+        </script>
       </Head>
       <body>
         <Header />

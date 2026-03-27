@@ -24,6 +24,9 @@ export default function DashboardPage() {
   const [isCreatingPathway, setIsCreatingPathway] = useState(false);
   const [certificateModalOpen, setCertificateModalOpen] = useState(false);
   const [certificatePathway, setCertificatePathway] = useState(null);
+  const [filterBy, setFilterBy] = useState('all');
+  const [sortBy, setSortBy] = useState('name');
+  const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
@@ -44,6 +47,40 @@ export default function DashboardPage() {
     const pathwayDescription = pathway.description.toLowerCase();
     const search = searchQuery.toLowerCase();
     return pathwayName.includes(search) || pathwayDescription.includes(search);
+  });
+
+  const sortedPathways = filteredPathways.sort((a, b) => {
+    if (sortBy === 'name') {
+      if (sortOrder === 'asc') {
+        return a.name.localeCompare(b.name);
+      } else {
+        return b.name.localeCompare(a.name);
+      }
+    } else if (sortBy === 'description') {
+      if (sortOrder === 'asc') {
+        return a.description.localeCompare(b.description);
+      } else {
+        return b.description.localeCompare(a.description);
+      }
+    } else if (sortBy === 'modules') {
+      if (sortOrder === 'asc') {
+        return a.modules.length - b.modules.length;
+      } else {
+        return b.modules.length - a.modules.length;
+      }
+    }
+    return 0;
+  });
+
+  const filteredSortedPathways = sortedPathways.filter((pathway) => {
+    if (filterBy === 'all') {
+      return true;
+    } else if (filterBy === 'recommended') {
+      return recommendedPathways.includes(pathway);
+    } else if (filterBy === 'completed') {
+      return completedPathways.includes(pathway);
+    }
+    return false;
   });
 
   const getRecommendedPathways = () => {
@@ -75,38 +112,16 @@ export default function DashboardPage() {
     }
   };
 
-  const handleCreatePathway = () => {
-    const newPathway = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: newPathwayName,
-      description: newPathwayDescription,
-      modules: newPathwayModules,
-    };
-    // Add new pathway to the list of pathways
-    // ...
+  const handleFilterChange = (filter) => {
+    setFilterBy(filter);
   };
 
-  const handleViewCertificate = (pathway) => {
-    setCertificatePathway(pathway);
-    setCertificateModalOpen(true);
+  const handleSortChange = (sort) => {
+    setSortBy(sort);
   };
 
-  const handleDownloadCertificate = () => {
-    const certificateHtml = `
-      <html>
-        <body>
-          <h1>Certificate of Completion</h1>
-          <p>Congratulations on completing the ${certificatePathway.name} pathway!</p>
-          <p>This certificate is awarded to you for your hard work and dedication.</p>
-        </body>
-      </html>
-    `;
-    const certificateBlob = new Blob([certificateHtml], { type: 'application/pdf' });
-    const certificateUrl = URL.createObjectURL(certificateBlob);
-    const a = document.createElement('a');
-    a.href = certificateUrl;
-    a.download = `${certificatePathway.name}-certificate.pdf`;
-    a.click();
+  const handleSortOrderChange = (order) => {
+    setSortOrder(order);
   };
 
   return (
@@ -117,31 +132,31 @@ export default function DashboardPage() {
         type="search"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search pathways"
+        placeholder="Search pathways..."
       />
+      <select value={filterBy} onChange={(e) => handleFilterChange(e.target.value)}>
+        <option value="all">All</option>
+        <option value="recommended">Recommended</option>
+        <option value="completed">Completed</option>
+      </select>
+      <select value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+        <option value="name">Name</option>
+        <option value="description">Description</option>
+        <option value="modules">Number of Modules</option>
+      </select>
+      <select value={sortOrder} onChange={(e) => handleSortOrderChange(e.target.value)}>
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
       <ul>
-        {filteredPathways.map((pathway) => (
+        {filteredSortedPathways.map((pathway) => (
           <li key={pathway.id}>
             <Link href={`/learning-path/${pathway.id}`}>
-              <a>
-                {pathway.name}
-                {completedPathways.includes(pathway) && (
-                  <button onClick={() => handleViewCertificate(pathway)}>View Certificate</button>
-                )}
-              </a>
+              {pathway.name}
             </Link>
           </li>
         ))}
       </ul>
-      {certificateModalOpen && (
-        <div>
-          <h2>Certificate of Completion</h2>
-          <p>Congratulations on completing the {certificatePathway.name} pathway!</p>
-          <p>This certificate is awarded to you for your hard work and dedication.</p>
-          <button onClick={handleDownloadCertificate}>Download Certificate</button>
-          <button onClick={() => setCertificateModalOpen(false)}>Close</button>
-        </div>
-      )}
     </div>
   );
 }

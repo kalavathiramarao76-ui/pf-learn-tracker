@@ -44,44 +44,29 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Learn Tracker - Transform Your Career with Personalized Learning" />
-        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay ahead in your career." />
-        <meta name="twitter:image" content="/og-image.png" />
-        <meta name="twitter:site" content="@LearnTracker" />
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "EducationalOrganization",
-              "name": "Learn Tracker",
-              "description": "A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills.",
-              "image": "/og-image.png",
-              "url": "https://learn-tracker.com",
-              "sameAs": [
-                "https://www.facebook.com/LearnTracker",
-                "https://twitter.com/LearnTracker",
-                "https://www.linkedin.com/company/LearnTracker"
-              ]
-            }
-          `}
-        </script>
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              "name": "Learn Tracker - Personalized Learning Pathways",
-              "description": "Discover a world of limitless learning opportunities with our adaptive learning platform, featuring expert-led courses, personalized recommendations, and a supportive community to help you achieve your goals.",
-              "image": "/og-image.png",
-              "url": "https://learn-tracker.com"
-            }
-          `}
-        </script>
+        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay" />
       </Head>
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Header />
-        {children}
+        <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8">
+          {children}
+        </main>
         <Footer />
       </body>
+      <style jsx global>
+        {`
+          @media (max-width: 768px) {
+            .container {
+              padding: 2rem;
+            }
+          }
+          @media (max-width: 480px) {
+            .container {
+              padding: 1rem;
+            }
+          }
+        `}
+      </style>
     </html>
   );
 }

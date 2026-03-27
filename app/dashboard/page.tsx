@@ -58,48 +58,18 @@ export default function DashboardPage() {
   });
 
   const getSortedPathways = (pathways) => {
-    switch (sortBy) {
-      case 'name':
-        return pathways.sort((a, b) => sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
-      case 'description':
-        return pathways.sort((a, b) => sortOrder === 'asc' ? a.description.localeCompare(b.description) : b.description.localeCompare(a.description));
-      case 'modules':
-        return pathways.sort((a, b) => sortOrder === 'asc' ? a.modules.length - b.modules.length : b.modules.length - a.modules.length);
-      default:
-        return pathways;
+    if (sortBy === 'name') {
+      return pathways.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === 'description') {
+      return pathways.sort((a, b) => a.description.localeCompare(b.description));
+    } else if (sortBy === 'modules') {
+      return pathways.sort((a, b) => a.modules.length - b.modules.length);
+    } else {
+      return pathways;
     }
   };
 
-  const getFilteredPathways = (pathways) => {
-    switch (filterBy) {
-      case 'all':
-        return pathways;
-      case 'recommended':
-        return pathways.filter((pathway) => recommendedPathways.includes(pathway.id));
-      case 'completed':
-        return pathways.filter((pathway) => completedPathways.includes(pathway.id));
-      default:
-        return pathways;
-    }
-  };
-
-  const applyFiltersAndSorting = (pathways) => {
-    const filtered = getFilteredPathways(pathways);
-    const sorted = getSortedPathways(filtered);
-    return sorted;
-  };
-
-  const handleFilterChange = (event) => {
-    setFilterBy(event.target.value);
-  };
-
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value);
-  };
-
-  const handleSortOrderChange = (event) => {
-    setSortOrder(event.target.value);
-  };
+  const sortedAndFilteredPathways = getSortedPathways(filteredPathways);
 
   return (
     <div>
@@ -108,34 +78,32 @@ export default function DashboardPage() {
       <input
         type="search"
         value={searchQuery}
-        onChange={(event) => setSearchQuery(event.target.value)}
+        onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search pathways"
       />
-      <select value={filterBy} onChange={handleFilterChange}>
+      <select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
         {filterOptions.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
-      <select value={sortBy} onChange={handleSortChange}>
+      <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
         {sortOptions.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
-      <select value={sortOrder} onChange={handleSortOrderChange}>
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-      </select>
       <ul>
-        {applyFiltersAndSorting(filteredPathways).map((pathway) => (
+        {sortedAndFilteredPathways.map((pathway) => (
           <li key={pathway.id}>
             <Link href={`/learning-path/${pathway.id}`}>
-              {pathway.name}
+              <a>
+                {pathway.name}
+                <ArrowRightIcon />
+              </a>
             </Link>
-            <ArrowRightIcon />
           </li>
         ))}
       </ul>

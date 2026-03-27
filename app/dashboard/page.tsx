@@ -20,12 +20,14 @@ export default function DashboardPage() {
   const [newPathwayDescription, setNewPathwayDescription] = useState('');
   const [newPathwayModules, setNewPathwayModules] = useState([]);
   const [availableModules, setAvailableModules] = useState([]);
+  const [completedPathways, setCompletedPathways] = useState([]);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
       setSelectedPathway(pathways[0].id);
       getRecommendedPathways();
       getAvailableModules();
+      getCompletedPathways();
     }
   }, [pathways, isLoading]);
 
@@ -59,6 +61,17 @@ export default function DashboardPage() {
     }
   };
 
+  const getCompletedPathways = () => {
+    if (pathways.length > 0 && progress.length > 0) {
+      const completed = pathways.filter((pathway) => {
+        const pathwayModules = pathway.modules.map((module) => module.id);
+        const completedModules = progress.filter((module) => pathwayModules.includes(module.id));
+        return completedModules.length === pathwayModules.length;
+      });
+      setCompletedPathways(completed);
+    }
+  };
+
   const handleCreatePathway = () => {
     const newPathway = {
       id: Math.random().toString(36).substr(2, 9),
@@ -83,95 +96,85 @@ export default function DashboardPage() {
     setNewPathwayModules((prevModules) => prevModules.filter((m) => m.id !== moduleId));
   };
 
+  const handleMarkPathwayAsCompleted = (pathwayId) => {
+    const pathway = pathways.find((p) => p.id === pathwayId);
+    if (pathway) {
+      const pathwayModules = pathway.modules.map((module) => module.id);
+      const updatedProgress = progress.concat(pathwayModules.map((moduleId) => ({ id: moduleId, category: pathway.category })));
+      setCompletedPathways((prevCompleted) => [...prevCompleted, pathway]);
+    }
+  };
+
   return (
-    <div className="flex flex-col h-screen">
-      <SEO title="Dashboard" description="Personalized learning pathways" />
-      <header className="bg-gray-900 text-white p-4">
-        <h1 className="text-2xl font-bold">Learn Tracker</h1>
-      </header>
-      <main className="flex-1 p-4">
-        <h2 className="text-xl font-bold mb-4">Your Learning Pathways</h2>
-        <input
-          type="search"
-          placeholder="Search pathways"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-2 rounded border border-gray-400 mb-4"
-        />
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {filteredPathways.map((pathway) => (
-              <div
-                key={pathway.id}
-                className={`bg-white p-4 rounded shadow ${
-                  selectedPathway === pathway.id ? 'bg-gray-100' : ''
-                }`}
-                onClick={() => handlePathwayClick(pathway.id)}
-              >
-                <h3 className="text-lg font-bold">{pathway.name}</h3>
-                <p className="text-gray-600">{pathway.description}</p>
-              </div>
-            ))}
-            {customPathways.map((pathway) => (
-              <div
-                key={pathway.id}
-                className={`bg-white p-4 rounded shadow ${
-                  selectedPathway === pathway.id ? 'bg-gray-100' : ''
-                }`}
-                onClick={() => handlePathwayClick(pathway.id)}
-              >
-                <h3 className="text-lg font-bold">{pathway.name}</h3>
-                <p className="text-gray-600">{pathway.description}</p>
-              </div>
-            ))}
-            {filteredPathways.length === 0 && customPathways.length === 0 && (
-              <p>No pathways found.</p>
+    <div>
+      <SEO title="Personalized Learning Pathways" />
+      <h1>Personalized Learning Pathways</h1>
+      <input
+        type="search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search pathways"
+      />
+      <ul>
+        {filteredPathways.map((pathway) => (
+          <li key={pathway.id}>
+            <Link href={`/learning-path/${pathway.id}`}>
+              {pathway.name}
+            </Link>
+            {completedPathways.includes(pathway) ? (
+              <span> (Completed)</span>
+            ) : (
+              <button onClick={() => handleMarkPathwayAsCompleted(pathway.id)}>Mark as Completed</button>
             )}
-          </div>
-        )}
-        <h2 className="text-xl font-bold mt-4">Create Custom Pathway</h2>
-        <input
-          type="text"
-          placeholder="Pathway name"
-          value={newPathwayName}
-          onChange={(e) => setNewPathwayName(e.target.value)}
-          className="w-full p-2 rounded border border-gray-400 mb-2"
-        />
-        <input
-          type="text"
-          placeholder="Pathway description"
-          value={newPathwayDescription}
-          onChange={(e) => setNewPathwayDescription(e.target.value)}
-          className="w-full p-2 rounded border border-gray-400 mb-2"
-        />
-        <h3 className="text-lg font-bold mb-2">Add Modules</h3>
-        <ul>
-          {availableModules.map((module) => (
-            <li key={module.id}>
-              <input
-                type="checkbox"
-                checked={newPathwayModules.includes(module)}
-                onChange={() => {
-                  if (newPathwayModules.includes(module)) {
-                    handleRemoveModule(module.id);
-                  } else {
-                    handleAddModule(module.id);
-                  }
-                }}
-              />
-              <span className="ml-2">{module.name}</span>
-            </li>
-          ))}
-        </ul>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleCreatePathway}
-        >
-          Create Pathway
-        </button>
-      </main>
+          </li>
+        ))}
+      </ul>
+      <h2>Recommended Pathways</h2>
+      <ul>
+        {recommendedPathways.map((pathway) => (
+          <li key={pathway.id}>
+            <Link href={`/learning-path/${pathway.id}`}>
+              {pathway.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <h2>Custom Pathways</h2>
+      <ul>
+        {customPathways.map((pathway) => (
+          <li key={pathway.id}>
+            <Link href={`/learning-path/${pathway.id}`}>
+              {pathway.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <h2>Create Custom Pathway</h2>
+      <input
+        type="text"
+        value={newPathwayName}
+        onChange={(e) => setNewPathwayName(e.target.value)}
+        placeholder="Pathway name"
+      />
+      <input
+        type="text"
+        value={newPathwayDescription}
+        onChange={(e) => setNewPathwayDescription(e.target.value)}
+        placeholder="Pathway description"
+      />
+      <ul>
+        {availableModules.map((module) => (
+          <li key={module.id}>
+            <input
+              type="checkbox"
+              checked={newPathwayModules.includes(module)}
+              onChange={() => handleAddModule(module.id)}
+            />
+            {module.name}
+          </li>
+        ))}
+      </ul>
+      <button onClick={handleCreatePathway}>Create Pathway</button>
     </div>
   );
 }

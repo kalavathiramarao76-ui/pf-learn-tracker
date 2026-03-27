@@ -46,13 +46,41 @@ export default function RootLayout({
         <meta name="twitter:site" content="@learntracker" />
         <meta property="fb:app_id" content="YOUR_APP_ID" />
         <meta property="fb:admins" content="YOUR_ADMIN_ID" />
-        <meta name="pinterest" content="nopin" />
-        <meta name="linkedin:title" content="Learn Tracker - Empowering Professionals with Personalized Learning Solutions" />
-        <meta name="linkedin:description" content="Stay ahead in your career with our expert-led courses, personalized learning pathways, and adaptive assessments, designed to help you develop the skills and knowledge you need to succeed in today's fast-paced business landscape." />
-        <meta name="linkedin:image" content="/linkedin-image.png" />
-        <meta name="linkedin:url" content="https://learn-tracker.com" />
+        <script type="application/ld+json">
+          {
+            {
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "Learn Tracker",
+              "description": "A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills.",
+              "url": "https://learn-tracker.com",
+              "image": "/og-image.png",
+              "sameAs": [
+                "https://www.facebook.com/learntracker",
+                "https://twitter.com/learntracker",
+                "https://www.linkedin.com/company/learntracker"
+              ]
+            }
+          }
+        </script>
+        <script type="application/ld+json">
+          {
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://learn-tracker.com"
+                }
+              ]
+            }
+          }
+        </script>
       </Head>
-      <body className={theme}>
+      <body>
         <Header />
         {children}
         <Footer />

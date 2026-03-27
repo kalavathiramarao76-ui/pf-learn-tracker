@@ -14,10 +14,12 @@ export default function DashboardPage() {
 
   const [selectedPathway, setSelectedPathway] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [recommendedPathways, setRecommendedPathways] = useState([]);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
       setSelectedPathway(pathways[0].id);
+      getRecommendedPathways();
     }
   }, [pathways, isLoading]);
 
@@ -32,6 +34,17 @@ export default function DashboardPage() {
     const search = searchQuery.toLowerCase();
     return pathwayName.includes(search) || pathwayDescription.includes(search);
   });
+
+  const getRecommendedPathways = () => {
+    if (pathways.length > 0 && progress.length > 0) {
+      const userInterests = progress.map((module) => module.category);
+      const recommended = pathways.filter((pathway) => {
+        const pathwayCategories = pathway.modules.map((module) => module.category);
+        return pathwayCategories.some((category) => userInterests.includes(category));
+      });
+      setRecommendedPathways(recommended);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -69,6 +82,23 @@ export default function DashboardPage() {
             )}
           </div>
         )}
+        {recommendedPathways.length > 0 && (
+          <div className="mt-4">
+            <h2 className="text-xl font-bold mb-4">Recommended Pathways</h2>
+            <div className="grid grid-cols-1 gap-4">
+              {recommendedPathways.map((pathway) => (
+                <div
+                  key={pathway.id}
+                  className="bg-white p-4 rounded shadow"
+                  onClick={() => handlePathwayClick(pathway.id)}
+                >
+                  <h3 className="text-lg font-bold">{pathway.name}</h3>
+                  <p className="text-gray-600">{pathway.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         {selectedPathway && (
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
@@ -79,19 +109,11 @@ export default function DashboardPage() {
                 <p className="text-lg font-bold">
                   You have completed {progress.completed} out of {progress.total} modules
                 </p>
-                <progress
-                  className="w-full h-4 rounded"
-                  value={progress.completed}
-                  max={progress.total}
-                />
               </div>
             )}
           </div>
         )}
       </main>
-      <footer className="bg-gray-900 text-white p-4">
-        <p>&copy; 2024 Learn Tracker</p>
-      </footer>
     </div>
   );
 }

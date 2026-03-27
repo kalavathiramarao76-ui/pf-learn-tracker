@@ -52,9 +52,11 @@ export default function RootLayout({
         <meta name="linkedin:image" content="/linkedin-image.png" />
         <meta name="linkedin:url" content="https://learn-tracker.com" />
       </Head>
-      <body className="font-sans text-gray-900 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
+      <body className={theme}>
         <Header />
-        <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">{children}</main>
+        <main className="container mx-auto p-4 md:p-6 lg:p-8 xl:p-10 2xl:p-12">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

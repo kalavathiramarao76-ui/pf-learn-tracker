@@ -90,42 +90,28 @@ use client;
 
 @layer components {
   .container {
-    @apply mx-auto;
-    @apply max-w-7xl;
-    @apply px-4;
-    @apply py-12;
+    @apply mx-auto max-w-7xl px-4 py-12;
   }
 
   .card {
-    @apply bg-white dark:bg-gray-800;
-    @apply shadow;
-    @apply rounded;
-    @apply p-4;
+    @apply bg-white dark:bg-gray-800 shadow rounded p-4;
   }
 
   .card-header {
-    @apply bg-gray-100 dark:bg-gray-700;
-    @apply py-2;
-    @apply px-4;
-    @apply rounded-t;
+    @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-t;
   }
 
   .card-body {
-    @apply py-4;
-    @apply px-4;
+    @apply py-4 px-4;
   }
 
   .card-footer {
-    @apply bg-gray-100 dark:bg-gray-700;
-    @apply py-2;
-    @apply px-4;
-    @apply rounded-b;
+    @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-b;
   }
 }
 
 @layer utilities {
   .dark-mode {
-    @apply bg-gray-900;
-    @apply text-gray-300;
+    @apply bg-gray-900 text-gray-300;
   }
 }

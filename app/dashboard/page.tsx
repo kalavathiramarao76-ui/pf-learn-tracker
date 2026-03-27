@@ -25,6 +25,16 @@ export default function DashboardPage() {
   const [filterBy, setFilterBy] = useState('all');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [filterOptions, setFilterOptions] = useState([
+    { label: 'All', value: 'all' },
+    { label: 'Recommended', value: 'recommended' },
+    { label: 'Completed', value: 'completed' },
+  ]);
+  const [sortOptions, setSortOptions] = useState([
+    { label: 'Name', value: 'name' },
+    { label: 'Description', value: 'description' },
+    { label: 'Modules', value: 'modules' },
+  ]);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
@@ -67,12 +77,63 @@ export default function DashboardPage() {
       return getSortedPathways(pathways.filter((pathway) => recommendedPathways.includes(pathway)));
     } else if (filterBy === 'completed') {
       return getSortedPathways(pathways.filter((pathway) => completedPathways.includes(pathway)));
+    } else {
+      return getSortedPathways(pathways);
     }
   };
 
-  const sortedPathways = getFilteredSortedPathways(filteredPathways);
+  const handleFilterChange = (event) => {
+    setFilterBy(event.target.value);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const handleSortOrderChange = (event) => {
+    setSortOrder(event.target.value);
+  };
 
   return (
-    // existing JSX code
+    <div>
+      <SEO title="Personalized Learning Pathways" />
+      <h1>Personalized Learning Pathways</h1>
+      <input
+        type="search"
+        value={searchQuery}
+        onChange={(event) => setSearchQuery(event.target.value)}
+        placeholder="Search pathways"
+      />
+      <select value={filterBy} onChange={handleFilterChange}>
+        {filterOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <select value={sortBy} onChange={handleSortChange}>
+        {sortOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <select value={sortOrder} onChange={handleSortOrderChange}>
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+      <ul>
+        {getFilteredSortedPathways(filteredPathways).map((pathway) => (
+          <li key={pathway.id}>
+            <Link href={`/learning-path/${pathway.id}`}>
+              <a>
+                {pathway.name}
+                <ArrowRightIcon />
+              </a>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

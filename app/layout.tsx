@@ -44,17 +44,14 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Learn Tracker - Transform Your Career with Personalized Learning" />
-        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay ahead in your career." />
-        <meta name="twitter:image" content="/twitter-image.png" />
-        <meta name="twitter:site" content="@learntracker" />
+        <meta name="twitter:description" content="Take the first step towards unlocking your potential with our personalized learning pathways, expert-led courses, and supportive community." />
+        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:site" content="@LearnTracker" />
+        <meta name="twitter:creator" content="@LearnTracker" />
+        <meta name="robots" content="index, follow" />
         <meta name="author" content="Learn Tracker" />
         <meta name="copyright" content="2024 Learn Tracker" />
-        <meta name="robots" content="index, follow" />
-        <meta name="googlebot" content="index, follow" />
-        <meta name="bingbot" content="index, follow" />
-        <meta name="msapplication-TileColor" content="#000" />
-        <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
-        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="canonical" content="https://learn-tracker.com" />
       </Head>
       <body>
         <Header />

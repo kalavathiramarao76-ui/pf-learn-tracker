@@ -1,0 +1,131 @@
+use client;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  html {
+    @apply bg-gray-100 dark:bg-gray-900;
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    @apply text-gray-600 dark:text-gray-300;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    @apply text-blue-600 dark:text-blue-400;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover {
+    @apply text-blue-800 dark:text-blue-500;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+    color: #333;
+  }
+
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
+  }
+
+  h5 {
+    @apply text-lg;
+  }
+
+  h6 {
+    @apply text-base;
+  }
+
+  button {
+    @apply bg-blue-600 dark:bg-blue-400;
+    @apply text-white;
+    @apply py-2 px-4;
+    @apply rounded;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  button:hover {
+    @apply bg-blue-800 dark:bg-blue-500;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto;
+    @apply max-w-7xl;
+    @apply px-4;
+    @apply py-12;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800;
+    @apply shadow;
+    @apply rounded;
+    @apply p-4;
+  }
+
+  .card-header {
+    @apply bg-gray-100 dark:bg-gray-700;
+    @apply py-2;
+    @apply px-4;
+    @apply rounded-t;
+  }
+
+  .card-body {
+    @apply py-4;
+    @apply px-4;
+  }
+
+  .card-footer {
+    @apply bg-gray-100 dark:bg-gray-700;
+    @apply py-2;
+    @apply px-4;
+    @apply rounded-b;
+  }
+}
+
+@layer utilities {
+  .dark-mode {
+    @apply bg-gray-900;
+    @apply text-gray-300;
+  }
+}

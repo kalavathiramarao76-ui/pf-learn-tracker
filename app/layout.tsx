@@ -56,14 +56,52 @@ export default function RootLayout({
         twitter={{
           handle: '@learntracker',
           site: '@learntracker',
-          cardType: 'summary_large_image',
         }}
       />
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Header />
-        {children}
+        <main className="flex-1 flex flex-col items-center justify-center">
+          {children}
+        </main>
         <Footer />
       </body>
+      <style jsx global>
+        {`
+          @media (max-width: 768px) {
+            .main-content {
+              padding: 20px;
+            }
+          }
+          @media (max-width: 480px) {
+            .main-content {
+              padding: 10px;
+            }
+          }
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+          }
+          .flex {
+            display: flex;
+          }
+          .flex-col {
+            flex-direction: column;
+          }
+          .items-center {
+            align-items: center;
+          }
+          .justify-center {
+            justify-content: center;
+          }
+          .min-h-screen {
+            min-height: 100vh;
+          }
+          .flex-1 {
+            flex: 1;
+          }
+        `}
+      </style>
     </html>
   );
 }

@@ -23,12 +23,20 @@ export default function DashboardPage() {
   const [isCreatingPathway, setIsCreatingPathway] = useState(false);
   const [certificateModalOpen, setCertificateModalOpen] = useState(false);
   const [certificatePathway, setCertificatePathway] = useState(null);
+  const [recommendedPathways, setRecommendedPathways] = useState([]);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
       setSelectedPathway(pathways[0].id);
     }
   }, [pathways, isLoading]);
+
+  useEffect(() => {
+    if (progress && pathways) {
+      const recommendedPathways = getRecommendedPathways(progress, pathways);
+      setRecommendedPathways(recommendedPathways);
+    }
+  }, [progress, pathways]);
 
   const handlePathwayClick = (id) => {
     setSelectedPathway(id);
@@ -56,6 +64,15 @@ export default function DashboardPage() {
 
   const sortedAndFilteredPathways = getSortedPathways(filteredPathways);
 
+  const getRecommendedPathways = (progress, pathways) => {
+    const userInterests = progress.map((item) => item.category);
+    const recommendedPathways = pathways.filter((pathway) => {
+      const pathwayCategories = pathway.modules.map((module) => module.category);
+      return pathwayCategories.some((category) => userInterests.includes(category));
+    });
+    return recommendedPathways;
+  };
+
   return (
     <div>
       <SEO title="Personalized Learning Pathways" />
@@ -71,6 +88,13 @@ export default function DashboardPage() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
       />
+      <h2>Recommended Pathways</h2>
+      <PathwayList
+        pathways={recommendedPathways}
+        handlePathwayClick={handlePathwayClick}
+        selectedPathway={selectedPathway}
+      />
+      <h2>All Pathways</h2>
       <PathwayList
         pathways={sortedAndFilteredPathways}
         handlePathwayClick={handlePathwayClick}

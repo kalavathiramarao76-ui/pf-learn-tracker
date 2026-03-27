@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const [newPathwayModules, setNewPathwayModules] = useState([]);
   const [availableModules, setAvailableModules] = useState([]);
   const [completedPathways, setCompletedPathways] = useState([]);
+  const [isCreatingPathway, setIsCreatingPathway] = useState(false);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
@@ -79,30 +80,19 @@ export default function DashboardPage() {
       description: newPathwayDescription,
       modules: newPathwayModules,
     };
-    setCustomPathways((prevPathways) => [...prevPathways, newPathway]);
+    setCustomPathways([...customPathways, newPathway]);
     setNewPathwayName('');
     setNewPathwayDescription('');
     setNewPathwayModules([]);
+    setIsCreatingPathway(false);
   };
 
-  const handleAddModule = (moduleId) => {
-    const module = availableModules.find((m) => m.id === moduleId);
-    if (module) {
-      setNewPathwayModules((prevModules) => [...prevModules, module]);
-    }
+  const handleAddModule = (module) => {
+    setNewPathwayModules([...newPathwayModules, module]);
   };
 
   const handleRemoveModule = (moduleId) => {
-    setNewPathwayModules((prevModules) => prevModules.filter((m) => m.id !== moduleId));
-  };
-
-  const handleMarkPathwayAsCompleted = (pathwayId) => {
-    const pathway = pathways.find((p) => p.id === pathwayId);
-    if (pathway) {
-      const pathwayModules = pathway.modules.map((module) => module.id);
-      const updatedProgress = progress.concat(pathwayModules.map((moduleId) => ({ id: moduleId, category: pathway.category })));
-      setCompletedPathways((prevCompleted) => [...prevCompleted, pathway]);
-    }
+    setNewPathwayModules(newPathwayModules.filter((module) => module.id !== moduleId));
   };
 
   return (
@@ -121,11 +111,6 @@ export default function DashboardPage() {
             <Link href={`/learning-path/${pathway.id}`}>
               {pathway.name}
             </Link>
-            {completedPathways.includes(pathway) ? (
-              <span> (Completed)</span>
-            ) : (
-              <button onClick={() => handleMarkPathwayAsCompleted(pathway.id)}>Mark as Completed</button>
-            )}
           </li>
         ))}
       </ul>
@@ -149,32 +134,43 @@ export default function DashboardPage() {
           </li>
         ))}
       </ul>
-      <h2>Create Custom Pathway</h2>
-      <input
-        type="text"
-        value={newPathwayName}
-        onChange={(e) => setNewPathwayName(e.target.value)}
-        placeholder="Pathway name"
-      />
-      <input
-        type="text"
-        value={newPathwayDescription}
-        onChange={(e) => setNewPathwayDescription(e.target.value)}
-        placeholder="Pathway description"
-      />
-      <ul>
-        {availableModules.map((module) => (
-          <li key={module.id}>
-            <input
-              type="checkbox"
-              checked={newPathwayModules.includes(module)}
-              onChange={() => handleAddModule(module.id)}
-            />
-            {module.name}
-          </li>
-        ))}
-      </ul>
-      <button onClick={handleCreatePathway}>Create Pathway</button>
+      <button onClick={() => setIsCreatingPathway(true)}>Create Custom Pathway</button>
+      {isCreatingPathway && (
+        <div>
+          <input
+            type="text"
+            value={newPathwayName}
+            onChange={(e) => setNewPathwayName(e.target.value)}
+            placeholder="Pathway name"
+          />
+          <input
+            type="text"
+            value={newPathwayDescription}
+            onChange={(e) => setNewPathwayDescription(e.target.value)}
+            placeholder="Pathway description"
+          />
+          <h3>Available Modules</h3>
+          <ul>
+            {availableModules.map((module) => (
+              <li key={module.id}>
+                <button onClick={() => handleAddModule(module)}>
+                  Add {module.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <h3>Selected Modules</h3>
+          <ul>
+            {newPathwayModules.map((module) => (
+              <li key={module.id}>
+                {module.name}
+                <button onClick={() => handleRemoveModule(module.id)}>Remove</button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleCreatePathway}>Create Pathway</button>
+        </div>
+      )}
     </div>
   );
 }

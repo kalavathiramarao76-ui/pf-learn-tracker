@@ -27,7 +27,7 @@ export default function RootLayout({
       <Head>
         <title>Learn Tracker - Personalized Learning Pathways</title>
         <meta name="description" content="A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills." />
-        <meta name="keywords" content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, educational technology, career development, online courses, certification programs" />
+        <meta name="keywords" content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, educational technology, career development, online courses, certification programs, lifelong learning, skill development, career advancement, online education, learning analytics, artificial intelligence in education" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon" />
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
@@ -44,29 +44,23 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Learn Tracker - Transform Your Career with Personalized Learning" />
-        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay" />
+        <meta name="twitter:description" content="Take the first step towards unlocking your full potential with our personalized learning pathways, designed to help you acquire new skills, enhance your knowledge, and stay ahead in your career." />
+        <meta name="twitter:image" content="/twitter-image.png" />
+        <meta name="twitter:site" content="@learntracker" />
+        <meta name="author" content="Learn Tracker" />
+        <meta name="copyright" content="2024 Learn Tracker" />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="bingbot" content="index, follow" />
+        <meta name="msapplication-TileColor" content="#000" />
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
       </Head>
-      <body className="flex flex-col min-h-screen">
+      <body>
         <Header />
-        <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8">
-          {children}
-        </main>
+        {children}
         <Footer />
       </body>
-      <style jsx global>
-        {`
-          @media (max-width: 768px) {
-            .container {
-              padding: 2rem;
-            }
-          }
-          @media (max-width: 480px) {
-            .container {
-              padding: 1rem;
-            }
-          }
-        `}
-      </style>
     </html>
   );
 }

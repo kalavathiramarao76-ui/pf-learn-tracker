@@ -22,6 +22,9 @@ export default function LearningPathPage() {
   const [customizingPathway, setCustomizingPathway] = useState<LearningPathway | null>(null);
   const [userPathways, setUserPathways] = useState<LearningPathway[]>([]);
   const [isManagingPathways, setIsManagingPathways] = useState(false);
+  const [modules, setModules] = useState<string[]>([]);
+  const [selectedModules, setSelectedModules] = useState<string[]>([]);
+  const [pathwayProgress, setPathwayProgress] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const storedPathways = getLocalStorage('pathways');
@@ -31,6 +34,18 @@ export default function LearningPathPage() {
     const storedUserPathways = getLocalStorage('userPathways');
     if (storedUserPathways) {
       setUserPathways(storedUserPathways);
+    }
+    const storedModules = getLocalStorage('modules');
+    if (storedModules) {
+      setModules(storedModules);
+    }
+    const storedSelectedModules = getLocalStorage('selectedModules');
+    if (storedSelectedModules) {
+      setSelectedModules(storedSelectedModules);
+    }
+    const storedPathwayProgress = getLocalStorage('pathwayProgress');
+    if (storedPathwayProgress) {
+      setPathwayProgress(storedPathwayProgress);
     }
   }, []);
 
@@ -78,101 +93,123 @@ export default function LearningPathPage() {
   };
 
   const handleRemoveUserPathway = (pathway: LearningPathway) => {
-    const filteredPathways = userPathways.filter((p) => p.id !== pathway.id);
+    const filteredPathways = userPathways.filter((userPathway) => userPathway.id !== pathway.id);
     setUserPathways(filteredPathways);
     setLocalStorage('userPathways', filteredPathways);
   };
 
-  const handleUpdateUserPathway = (updatedPathway: LearningPathway) => {
-    const updatedPathways = userPathways.map((p) => (p.id === updatedPathway.id ? updatedPathway : p));
-    setUserPathways(updatedPathways);
-    setLocalStorage('userPathways', updatedPathways);
+  const handleAddModule = (module: string) => {
+    setModules([...modules, module]);
+    setLocalStorage('modules', [...modules, module]);
   };
 
-  const handleManagePathways = () => {
-    setIsManagingPathways(true);
+  const handleRemoveModule = (module: string) => {
+    const filteredModules = modules.filter((m) => m !== module);
+    setModules(filteredModules);
+    setLocalStorage('modules', filteredModules);
   };
 
-  const handleStopManagingPathways = () => {
-    setIsManagingPathways(false);
+  const handleSelectModule = (module: string) => {
+    if (selectedModules.includes(module)) {
+      const filteredModules = selectedModules.filter((m) => m !== module);
+      setSelectedModules(filteredModules);
+      setLocalStorage('selectedModules', filteredModules);
+    } else {
+      setSelectedModules([...selectedModules, module]);
+      setLocalStorage('selectedModules', [...selectedModules, module]);
+    }
+  };
+
+  const handleUpdatePathwayProgress = (pathwayId: string, progress: number) => {
+    setPathwayProgress({ ...pathwayProgress, [pathwayId]: progress });
+    setLocalStorage('pathwayProgress', { ...pathwayProgress, [pathwayId]: progress });
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-      <h1 className="text-3xl font-bold mb-4">Personalized Learning Pathways</h1>
-      <div className="flex justify-between mb-4">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleOpenCreatePathwayModal}
-        >
-          Create New Pathway
-        </button>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleManagePathways}
-        >
-          Manage Custom Pathways
-        </button>
-      </div>
-      {isManagingPathways ? (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Custom Pathways</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {userPathways.map((pathway) => (
-              <PathwayCard
-                key={pathway.id}
-                pathway={pathway}
-                onSelect={handleSelectPathway}
-                onRemove={() => handleRemoveUserPathway(pathway)}
-                onCustomize={() => handleCustomizePathway(pathway)}
-              />
-            ))}
-          </div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleStopManagingPathways}
-          >
-            Stop Managing Pathways
-          </button>
-        </div>
-      ) : (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Recommended Pathways</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {pathways.map((pathway) => (
-              <PathwayCard
-                key={pathway.id}
-                pathway={pathway}
-                onSelect={handleSelectPathway}
-                onRemove={handleRemovePathway}
-                onCustomize={handleCustomizePathway}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      {selectedPathway && (
-        <div>
-          <ProgressTracker pathway={selectedPathway} />
-          <Recommendations pathway={selectedPathway} />
-          <DiscussionForum pathway={selectedPathway} />
-        </div>
-      )}
+    <div>
+      <h1>Personalized Learning Pathways</h1>
+      <button onClick={handleOpenCreatePathwayModal}>Create Pathway</button>
       {isCreatePathwayModalOpen && (
         <CreatePathwayModal
           onClose={handleCloseCreatePathwayModal}
-          onCreate={(newPathway) => handleCreatePathway(newPathway)}
-          onCreateUserPathway={(newPathway) => handleCreateUserPathway(newPathway)}
+          onCreatePathway={handleCreatePathway}
         />
       )}
-      {isCustomizePathwayModalOpen && customizingPathway && (
+      {isCustomizePathwayModalOpen && (
         <CustomizePathwayModal
           onClose={handleCloseCustomizePathwayModal}
           pathway={customizingPathway}
-          onUpdate={(updatedPathway) => handleUpdatePathway(updatedPathway)}
-          onUpdateUserPathway={(updatedPathway) => handleUpdateUserPathway(updatedPathway)}
+          onUpdatePathway={handleUpdatePathway}
         />
       )}
+      <div>
+        {pathways.map((pathway) => (
+          <PathwayCard
+            key={pathway.id}
+            pathway={pathway}
+            onSelect={handleSelectPathway}
+            onRemove={handleRemovePathway}
+            onCustomize={handleCustomizePathway}
+          />
+        ))}
+      </div>
+      <div>
+        {userPathways.map((pathway) => (
+          <PathwayCard
+            key={pathway.id}
+            pathway={pathway}
+            onSelect={handleSelectPathway}
+            onRemove={handleRemoveUserPathway}
+          />
+        ))}
+      </div>
+      <button onClick={handleCreateUserPathway}>Create User Pathway</button>
+      <div>
+        <h2>Modules</h2>
+        <ul>
+          {modules.map((module) => (
+            <li key={module}>
+              <input
+                type="checkbox"
+                checked={selectedModules.includes(module)}
+                onChange={() => handleSelectModule(module)}
+              />
+              {module}
+              <button onClick={() => handleRemoveModule(module)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+        <input
+          type="text"
+          placeholder="Add new module"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleAddModule(e.currentTarget.value);
+              e.currentTarget.value = '';
+            }
+          }}
+        />
+      </div>
+      <div>
+        <h2>Pathway Progress</h2>
+        <ul>
+          {Object.keys(pathwayProgress).map((pathwayId) => (
+            <li key={pathwayId}>
+              {pathwayId}: {pathwayProgress[pathwayId]}%
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={pathwayProgress[pathwayId]}
+                onChange={(e) => handleUpdatePathwayProgress(pathwayId, parseInt(e.target.value))}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <ProgressTracker progress={pathwayProgress} />
+      <Recommendations pathways={pathways} />
+      <DiscussionForum pathways={pathways} />
     </div>
   );
 }

@@ -4,6 +4,11 @@ import { usePathways, useProgress } from '../hooks';
 import Link from 'next/link';
 import { ArrowRightIcon } from '../icons';
 import { SEO } from '../components/SEO';
+import PathwayList from './PathwayList';
+import PathwayFilter from './PathwayFilter';
+import PathwaySort from './PathwaySort';
+import CreatePathwayForm from './CreatePathwayForm';
+import CertificateModal from './CertificateModal';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -12,36 +17,16 @@ export default function DashboardPage() {
 
   const [selectedPathway, setSelectedPathway] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [recommendedPathways, setRecommendedPathways] = useState([]);
-  const [customPathways, setCustomPathways] = useState([]);
-  const [newPathwayName, setNewPathwayName] = useState('');
-  const [newPathwayDescription, setNewPathwayDescription] = useState('');
-  const [newPathwayModules, setNewPathwayModules] = useState([]);
-  const [availableModules, setAvailableModules] = useState([]);
-  const [completedPathways, setCompletedPathways] = useState([]);
-  const [isCreatingPathway, setIsCreatingPathway] = useState(false);
-  const [certificateModalOpen, setCertificateModalOpen] = useState(false);
-  const [certificatePathway, setCertificatePathway] = useState(null);
   const [filterBy, setFilterBy] = useState('all');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [filterOptions, setFilterOptions] = useState([
-    { label: 'All', value: 'all' },
-    { label: 'Recommended', value: 'recommended' },
-    { label: 'Completed', value: 'completed' },
-  ]);
-  const [sortOptions, setSortOptions] = useState([
-    { label: 'Name', value: 'name' },
-    { label: 'Description', value: 'description' },
-    { label: 'Modules', value: 'modules' },
-  ]);
+  const [isCreatingPathway, setIsCreatingPathway] = useState(false);
+  const [certificateModalOpen, setCertificateModalOpen] = useState(false);
+  const [certificatePathway, setCertificatePathway] = useState(null);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
       setSelectedPathway(pathways[0].id);
-      getRecommendedPathways();
-      getAvailableModules();
-      getCompletedPathways();
     }
   }, [pathways, isLoading]);
 
@@ -74,39 +59,33 @@ export default function DashboardPage() {
   return (
     <div>
       <SEO title="Personalized Learning Pathways" />
-      <h1>Personalized Learning Pathways</h1>
-      <input
-        type="search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search pathways"
+      <PathwayFilter
+        filterBy={filterBy}
+        setFilterBy={setFilterBy}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
-      <select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
-        {filterOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-        {sortOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <ul>
-        {sortedAndFilteredPathways.map((pathway) => (
-          <li key={pathway.id}>
-            <Link href={`/learning-path/${pathway.id}`}>
-              <a>
-                {pathway.name}
-                <ArrowRightIcon />
-              </a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <PathwaySort
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
+      <PathwayList
+        pathways={sortedAndFilteredPathways}
+        handlePathwayClick={handlePathwayClick}
+        selectedPathway={selectedPathway}
+      />
+      <CreatePathwayForm
+        isCreatingPathway={isCreatingPathway}
+        setIsCreatingPathway={setIsCreatingPathway}
+      />
+      <CertificateModal
+        certificateModalOpen={certificateModalOpen}
+        setCertificateModalOpen={setCertificateModalOpen}
+        certificatePathway={certificatePathway}
+        setCertificatePathway={setCertificatePathway}
+      />
     </div>
   );
 }

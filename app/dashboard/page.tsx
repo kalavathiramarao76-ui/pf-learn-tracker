@@ -15,11 +15,17 @@ export default function DashboardPage() {
   const [selectedPathway, setSelectedPathway] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [recommendedPathways, setRecommendedPathways] = useState([]);
+  const [customPathways, setCustomPathways] = useState([]);
+  const [newPathwayName, setNewPathwayName] = useState('');
+  const [newPathwayDescription, setNewPathwayDescription] = useState('');
+  const [newPathwayModules, setNewPathwayModules] = useState([]);
+  const [availableModules, setAvailableModules] = useState([]);
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
       setSelectedPathway(pathways[0].id);
       getRecommendedPathways();
+      getAvailableModules();
     }
   }, [pathways, isLoading]);
 
@@ -44,6 +50,37 @@ export default function DashboardPage() {
       });
       setRecommendedPathways(recommended);
     }
+  };
+
+  const getAvailableModules = () => {
+    if (pathways.length > 0) {
+      const allModules = pathways.reduce((acc, pathway) => acc.concat(pathway.modules), []);
+      setAvailableModules(allModules);
+    }
+  };
+
+  const handleCreatePathway = () => {
+    const newPathway = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: newPathwayName,
+      description: newPathwayDescription,
+      modules: newPathwayModules,
+    };
+    setCustomPathways((prevPathways) => [...prevPathways, newPathway]);
+    setNewPathwayName('');
+    setNewPathwayDescription('');
+    setNewPathwayModules([]);
+  };
+
+  const handleAddModule = (moduleId) => {
+    const module = availableModules.find((m) => m.id === moduleId);
+    if (module) {
+      setNewPathwayModules((prevModules) => [...prevModules, module]);
+    }
+  };
+
+  const handleRemoveModule = (moduleId) => {
+    setNewPathwayModules((prevModules) => prevModules.filter((m) => m.id !== moduleId));
   };
 
   return (
@@ -77,42 +114,63 @@ export default function DashboardPage() {
                 <p className="text-gray-600">{pathway.description}</p>
               </div>
             ))}
-            {filteredPathways.length === 0 && (
-              <p>No pathways found matching your search query.</p>
-            )}
-          </div>
-        )}
-        {recommendedPathways.length > 0 && (
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-4">Recommended Pathways</h2>
-            <div className="grid grid-cols-1 gap-4">
-              {recommendedPathways.map((pathway) => (
-                <div
-                  key={pathway.id}
-                  className="bg-white p-4 rounded shadow"
-                  onClick={() => handlePathwayClick(pathway.id)}
-                >
-                  <h3 className="text-lg font-bold">{pathway.name}</h3>
-                  <p className="text-gray-600">{pathway.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {selectedPathway && (
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-4">Your Progress</h2>
-            {isProgressLoading ? (
-              <p>Loading...</p>
-            ) : (
-              <div className="bg-white p-4 rounded shadow">
-                <p className="text-lg font-bold">
-                  You have completed {progress.completed} out of {progress.total} modules
-                </p>
+            {customPathways.map((pathway) => (
+              <div
+                key={pathway.id}
+                className={`bg-white p-4 rounded shadow ${
+                  selectedPathway === pathway.id ? 'bg-gray-100' : ''
+                }`}
+                onClick={() => handlePathwayClick(pathway.id)}
+              >
+                <h3 className="text-lg font-bold">{pathway.name}</h3>
+                <p className="text-gray-600">{pathway.description}</p>
               </div>
+            ))}
+            {filteredPathways.length === 0 && customPathways.length === 0 && (
+              <p>No pathways found.</p>
             )}
           </div>
         )}
+        <h2 className="text-xl font-bold mt-4">Create Custom Pathway</h2>
+        <input
+          type="text"
+          placeholder="Pathway name"
+          value={newPathwayName}
+          onChange={(e) => setNewPathwayName(e.target.value)}
+          className="w-full p-2 rounded border border-gray-400 mb-2"
+        />
+        <input
+          type="text"
+          placeholder="Pathway description"
+          value={newPathwayDescription}
+          onChange={(e) => setNewPathwayDescription(e.target.value)}
+          className="w-full p-2 rounded border border-gray-400 mb-2"
+        />
+        <h3 className="text-lg font-bold mb-2">Add Modules</h3>
+        <ul>
+          {availableModules.map((module) => (
+            <li key={module.id}>
+              <input
+                type="checkbox"
+                checked={newPathwayModules.includes(module)}
+                onChange={() => {
+                  if (newPathwayModules.includes(module)) {
+                    handleRemoveModule(module.id);
+                  } else {
+                    handleAddModule(module.id);
+                  }
+                }}
+              />
+              <span className="ml-2">{module.name}</span>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleCreatePathway}
+        >
+          Create Pathway
+        </button>
       </main>
     </div>
   );

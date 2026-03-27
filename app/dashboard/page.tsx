@@ -47,16 +47,16 @@ export default function DashboardPage() {
     const pathwayName = pathway.name.toLowerCase();
     const pathwayDescription = pathway.description.toLowerCase();
     const search = searchQuery.toLowerCase();
-    return pathwayName.includes(search) || pathwayDescription.includes(search);
+    return (filterBy === 'all' || pathway.category === filterBy) && (pathwayName.includes(search) || pathwayDescription.includes(search));
   });
 
   const getSortedPathways = (pathways) => {
     if (sortBy === 'name') {
-      return pathways.sort((a, b) => a.name.localeCompare(b.name));
+      return pathways.sort((a, b) => sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
     } else if (sortBy === 'description') {
-      return pathways.sort((a, b) => a.description.localeCompare(b.description));
+      return pathways.sort((a, b) => sortOrder === 'asc' ? a.description.localeCompare(b.description) : b.description.localeCompare(a.description));
     } else if (sortBy === 'modules') {
-      return pathways.sort((a, b) => a.modules.length - b.modules.length);
+      return pathways.sort((a, b) => sortOrder === 'asc' ? a.modules.length - b.modules.length : b.modules.length - a.modules.length);
     } else {
       return pathways;
     }
@@ -76,34 +76,16 @@ export default function DashboardPage() {
   return (
     <div>
       <SEO title="Personalized Learning Pathways" />
-      <PathwayFilter
-        filterBy={filterBy}
-        setFilterBy={setFilterBy}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+      <PathwayFilter filterBy={filterBy} setFilterBy={setFilterBy} />
+      <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
+      <input
+        type="search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search pathways"
       />
-      <PathwaySort
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
-      />
-      <h2>Recommended Pathways</h2>
-      <PathwayList
-        pathways={recommendedPathways}
-        handlePathwayClick={handlePathwayClick}
-        selectedPathway={selectedPathway}
-      />
-      <h2>All Pathways</h2>
-      <PathwayList
-        pathways={sortedAndFilteredPathways}
-        handlePathwayClick={handlePathwayClick}
-        selectedPathway={selectedPathway}
-      />
-      <CreatePathwayForm
-        isCreatingPathway={isCreatingPathway}
-        setIsCreatingPathway={setIsCreatingPathway}
-      />
+      <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
+      <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
       <CertificateModal
         certificateModalOpen={certificateModalOpen}
         setCertificateModalOpen={setCertificateModalOpen}

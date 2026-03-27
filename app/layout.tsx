@@ -34,6 +34,11 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Learn Tracker" />
+        <meta name="copyright" content="2024 Learn Tracker" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </Head>
       <NextSeo
         title="Learn Tracker - Unlock Your Potential with Personalized Learning Pathways"
@@ -52,56 +57,19 @@ export default function RootLayout({
             },
           ],
           siteName: 'Learn Tracker',
+          locale: 'en_US',
         }}
         twitter={{
           handle: '@learntracker',
           site: '@learntracker',
+          cardType: 'summary_large_image',
         }}
       />
-      <body className="flex flex-col min-h-screen">
+      <body>
         <Header />
-        <main className="flex-1 flex flex-col items-center justify-center">
-          {children}
-        </main>
+        {children}
         <Footer />
       </body>
-      <style jsx global>
-        {`
-          @media (max-width: 768px) {
-            .main-content {
-              padding: 20px;
-            }
-          }
-          @media (max-width: 480px) {
-            .main-content {
-              padding: 10px;
-            }
-          }
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-          }
-          .flex {
-            display: flex;
-          }
-          .flex-col {
-            flex-direction: column;
-          }
-          .items-center {
-            align-items: center;
-          }
-          .justify-center {
-            justify-content: center;
-          }
-          .min-h-screen {
-            min-height: 100vh;
-          }
-          .flex-1 {
-            flex: 1;
-          }
-        `}
-      </style>
     </html>
   );
 }

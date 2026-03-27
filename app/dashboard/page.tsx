@@ -13,6 +13,7 @@ export default function DashboardPage() {
   const { progress, isProgressLoading } = useProgress();
 
   const [selectedPathway, setSelectedPathway] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (!isLoading && pathways.length > 0) {
@@ -25,6 +26,13 @@ export default function DashboardPage() {
     router.push(`/learning-path/${id}`);
   };
 
+  const filteredPathways = pathways.filter((pathway) => {
+    const pathwayName = pathway.name.toLowerCase();
+    const pathwayDescription = pathway.description.toLowerCase();
+    const search = searchQuery.toLowerCase();
+    return pathwayName.includes(search) || pathwayDescription.includes(search);
+  });
+
   return (
     <div className="flex flex-col h-screen">
       <SEO title="Dashboard" description="Personalized learning pathways" />
@@ -33,11 +41,18 @@ export default function DashboardPage() {
       </header>
       <main className="flex-1 p-4">
         <h2 className="text-xl font-bold mb-4">Your Learning Pathways</h2>
+        <input
+          type="search"
+          placeholder="Search pathways"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-2 rounded border border-gray-400 mb-4"
+        />
         {isLoading ? (
           <p>Loading...</p>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {pathways.map((pathway) => (
+            {filteredPathways.map((pathway) => (
               <div
                 key={pathway.id}
                 className={`bg-white p-4 rounded shadow ${
@@ -49,6 +64,9 @@ export default function DashboardPage() {
                 <p className="text-gray-600">{pathway.description}</p>
               </div>
             ))}
+            {filteredPathways.length === 0 && (
+              <p>No pathways found matching your search query.</p>
+            )}
           </div>
         )}
         {selectedPathway && (

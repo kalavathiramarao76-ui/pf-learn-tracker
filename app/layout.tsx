@@ -44,6 +44,13 @@ export default function RootLayout({
         <meta name="twitter:description" content="A personalized learning platform that helps students and professionals set and achieve their learning goals." />
         <meta name="twitter:image" content="/twitter-image.png" />
         <meta name="twitter:site" content="@learntracker" />
+        <meta property="fb:app_id" content="YOUR_APP_ID" />
+        <meta property="fb:admins" content="YOUR_ADMIN_ID" />
+        <meta name="pinterest" content="nopin" />
+        <meta name="linkedin:title" content="Learn Tracker - Personalized Learning Pathways" />
+        <meta name="linkedin:description" content="A personalized learning platform that helps students and professionals set and achieve their learning goals." />
+        <meta name="linkedin:image" content="/linkedin-image.png" />
+        <meta name="linkedin:url" content="https://learn-tracker.com" />
       </Head>
       <body className="font-sans text-gray-900 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
         <Header />

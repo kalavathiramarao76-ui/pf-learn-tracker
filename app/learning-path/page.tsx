@@ -8,6 +8,7 @@ import { LearningPathway } from '../types/LearningPathway';
 import { PathwayCard } from '../components/PathwayCard';
 import { ProgressTracker } from '../components/ProgressTracker';
 import { Recommendations } from '../components/Recommendations';
+import { DiscussionForum } from '../components/DiscussionForum';
 
 export default function LearningPathPage() {
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function LearningPathPage() {
         <div className="mt-8">
           <ProgressTracker pathway={selectedPathway} />
           <Recommendations pathway={selectedPathway} />
+          <DiscussionForum pathway={selectedPathway} />
         </div>
       )}
     </div>

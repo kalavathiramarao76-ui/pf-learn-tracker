@@ -72,13 +72,13 @@ export default function RootLayout({
       </Head>
       <body>
         <Header />
-        <div className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+        <main className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
           <div className="flex flex-wrap justify-center mb-4">
             <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
               <PathwayFilter
                 filter={filter}
                 onFilterChange={handleFilterChange}
-                placeholder="Search pathways..."
+                className="mb-4"
               />
             </div>
             <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
@@ -86,11 +86,12 @@ export default function RootLayout({
                 categories={pathwayCategories}
                 selectedCategory={category}
                 onCategorySelect={handleCategorySelect}
+                className="mb-4"
               />
             </div>
           </div>
           {children}
-        </div>
+        </main>
         <Footer />
       </body>
     </html>

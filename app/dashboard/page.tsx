@@ -69,43 +69,27 @@ export default function DashboardPage() {
     const userProgress = progress.map((item) => item.progress);
     const userLearningStyle = progress.map((item) => item.learningStyle);
 
-    const pathwayScores = pathways.map((pathway) => {
-      let score = 0;
+    const recommendedPathways = pathways.filter((pathway) => {
+      const pathwayCategory = pathway.category;
+      const pathwayLearningStyle = pathway.learningStyle;
 
-      // Category matching
-      if (userInterests.includes(pathway.category)) {
-        score += 10;
-      }
+      const interestMatch = userInterests.includes(pathwayCategory);
+      const progressMatch = userProgress.includes(pathway.progress);
+      const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
 
-      // Progress matching
-      const progressMatch = userProgress.find((item) => item.category === pathway.category);
-      if (progressMatch) {
-        score += progressMatch.progress * 5;
-      }
+      const interestWeight = 0.4;
+      const progressWeight = 0.3;
+      const learningStyleWeight = 0.3;
 
-      // Learning style matching
-      const learningStyleMatch = userLearningStyle.find((item) => item.category === pathway.category);
-      if (learningStyleMatch) {
-        if (learningStyleMatch.style === pathway.learningStyle) {
-          score += 10;
-        }
-      }
+      const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
 
-      // Module completion rate
-      const moduleCompletionRate = pathway.modules.reduce((acc, module) => {
-        const moduleProgress = progress.find((item) => item.moduleId === module.id);
-        if (moduleProgress) {
-          acc += moduleProgress.progress;
-        }
-        return acc;
-      }, 0) / pathway.modules.length;
-      score += moduleCompletionRate * 10;
-
-      return { pathway, score };
+      return score >= 0.5;
     });
 
-    return pathwayScores.sort((a, b) => b.score - a.score).map((item) => item.pathway);
+    return recommendedPathways;
   };
+
+  const sortedAndFilteredRecommendedPathways = getSortedPathways(recommendedPathways);
 
   return (
     <div>
@@ -114,7 +98,9 @@ export default function DashboardPage() {
       <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
-      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
+      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />
+      <h2>Recommended Pathways</h2>
+      <PathwayList pathways={sortedAndFilteredRecommendedPathways} handlePathwayClick={handlePathwayClick} />
     </div>
   );
 }

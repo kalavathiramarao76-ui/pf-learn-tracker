@@ -71,33 +71,40 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"
+        />
       </Head>
-      <body className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8">
-          <div className="flex flex-wrap justify-center mb-4">
-            <PathwayFilter
-              filter={filter}
-              onFilterChange={handleFilterChange}
-              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
-            />
-            <PathwayCategories
-              categories={pathwayCategories}
-              selectedCategory={category}
-              onCategorySelect={handleCategorySelect}
-              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
-            />
-            <input
-              type="search"
-              value={searchQuery}
-              onChange={handleSearch}
-              placeholder="Search pathways"
-              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 border border-gray-300 rounded-lg"
-            />
+      <body className="overflow-x-hidden">
+        <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
+          <Header />
+          <div className="flex flex-col md:flex-row justify-center items-center md:justify-between mt-4 md:mt-8 lg:mt-12 xl:mt-16">
+            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-8 lg:mb-12 xl:mb-16 animate__animated animate__fadeInLeft">
+              <PathwayFilter filter={filter} onFilterChange={handleFilterChange} />
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-8 lg:mb-12 xl:mb-16 animate__animated animate__fadeInRight">
+              <PathwayCategories
+                categories={pathwayCategories}
+                selectedCategory={category}
+                onCategorySelect={handleCategorySelect}
+              />
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-8 lg:mb-12 xl:mb-16 animate__animated animate__fadeInUp">
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={handleSearch}
+                placeholder="Search pathways"
+                className="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
-          {children}
-        </main>
-        <Footer />
+          <div className="mt-4 md:mt-8 lg:mt-12 xl:mt-16 animate__animated animate__fadeInUp">
+            {children}
+          </div>
+          <Footer />
+        </div>
       </body>
     </html>
   );

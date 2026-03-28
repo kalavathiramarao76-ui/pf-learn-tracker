@@ -136,4 +136,56 @@
   .high-contrast img {
     @apply filter invert;
   }
+
+  .accessible-image {
+    @apply max-w-full h-auto;
+  }
+
+  .accessible-image::after {
+    content: attr(alt);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@layer base {
+  :root {
+    --color-contrast: #333;
+    --color-background: #f7f7f7;
+  }
+
+  html {
+    @apply bg-var(--color-background) dark:bg-var(--color-contrast);
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    @apply text-var(--color-contrast) dark:text-var(--color-background);
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+    color: var(--color-contrast);
+  }
+
+  button {
+    @apply bg-blue-600 dark:bg-blue-400;
+    @apply text-var(--color-background);
+    @apply py-2 px-4;
+    @apply rounded;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  button:hover {
+    @apply bg-blue-800 dark:bg-blue-500;
+  }
 }

@@ -22,6 +22,11 @@ export default function RootLayout({
   const router = useRouter();
   const [filter, setFilter] = useState('');
   const [category, setCategory] = useState('');
+  const [pathwayCategories, setPathwayCategories] = useState([
+    { id: 1, name: 'Technology' },
+    { id: 2, name: 'Business' },
+    { id: 3, name: 'Creative Skills' },
+  ]);
 
   useEffect(() => {
     setTheme(darkMode ? 'dark' : 'light');
@@ -35,12 +40,27 @@ export default function RootLayout({
     setCategory(category);
   };
 
+  const handleCategorySelect = (categoryId: number) => {
+    const selectedCategory = pathwayCategories.find(
+      (category) => category.id === categoryId
+    );
+    if (selectedCategory) {
+      setCategory(selectedCategory.name);
+    }
+  };
+
   return (
     <html lang="en" className={theme}>
       <Head>
         <title>Learn Tracker - Personalized Learning Pathways</title>
-        <meta name="description" content="A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills." />
-        <meta name="keywords" content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, educational technology, career development, online courses, certification programs, lifelong learning, skill development, career advancement, online education, learning analytics, artificial intelligence in education" />
+        <meta
+          name="description"
+          content="A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills."
+        />
+        <meta
+          name="keywords"
+          content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, educational technology, career development, online courses, certification programs, lifelong learning, skill development, career advancement, online education, learning analytics, artificial intelligence in education"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon" />
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
@@ -55,23 +75,31 @@ export default function RootLayout({
       <NextSeo
         title="Learn Tracker - Unlock Your Potential with Personalized Learning Pathways"
         description="Discover a world of limitless learning opportunities with our adaptive learning platform, featuring expert-led courses, personalized recommendations, and a supportive community to help you achieve your goals."
-        openGraph={{
-          type: 'website',
-          url: 'https://learn-tracker.com',
-          title: 'Learn Tracker - Transform Your Career with Personalized Learning',
-          description: 'Take the first step towards unlocking your potential with our personalized learning pathways, adaptive assessments, and expert-led courses.',
-          images: [
-            // Add image URLs here
-          ],
-        }}
       />
-      <Header />
-      <main className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
-        <PathwayFilter filter={filter} onFilterChange={handleFilterChange} />
-        <PathwayCategories category={category} onCategoryChange={handleCategoryChange} />
-        {children}
-      </main>
-      <Footer />
+      <body className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1">
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap -mx-4">
+              <div className="w-full lg:w-1/4 xl:w-1/5 p-4">
+                <PathwayCategories
+                  categories={pathwayCategories}
+                  selectedCategory={category}
+                  onSelect={handleCategorySelect}
+                />
+              </div>
+              <div className="w-full lg:w-3/4 xl:w-4/5 p-4">
+                <PathwayFilter
+                  filter={filter}
+                  onFilterChange={handleFilterChange}
+                />
+                {children}
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }

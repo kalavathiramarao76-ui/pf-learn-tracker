@@ -70,37 +70,46 @@ export default function DashboardPage() {
     const userLearningStyle = progress.map((item) => item.learningStyle);
 
     const recommendedPathways = pathways.filter((pathway) => {
-      const pathwayCategories = pathway.modules.map((module) => module.category);
-      const pathwayLearningStyle = pathway.learningStyle;
+      const pathwayInterests = pathway.modules.map((module) => module.category);
+      const pathwayDifficulty = pathway.modules.map((module) => module.difficulty);
+      const pathwayLearningStyle = pathway.modules.map((module) => module.learningStyle);
 
-      const interestScore = calculateInterestScore(userInterests, pathwayCategories);
-      const progressScore = calculateProgressScore(userProgress, pathway.modules);
-      const learningStyleScore = calculateLearningStyleScore(userLearningStyle, pathwayLearningStyle);
+      const interestMatch = userInterests.some((interest) => pathwayInterests.includes(interest));
+      const progressMatch = userProgress.some((progressItem) => pathwayDifficulty.includes(progressItem));
+      const learningStyleMatch = userLearningStyle.some((learningStyle) => pathwayLearningStyle.includes(learningStyle));
 
-      const overallScore = interestScore + progressScore + learningStyleScore;
-
-      return overallScore > 0.5;
+      return interestMatch && progressMatch && learningStyleMatch;
     });
 
     return recommendedPathways;
   };
 
-  const calculateInterestScore = (userInterests, pathwayCategories) => {
-    const commonCategories = userInterests.filter((interest) => pathwayCategories.includes(interest));
-    return commonCategories.length / userInterests.length;
+  const calculatePathwayScore = (pathway, progress) => {
+    const pathwayInterests = pathway.modules.map((module) => module.category);
+    const pathwayDifficulty = pathway.modules.map((module) => module.difficulty);
+    const pathwayLearningStyle = pathway.modules.map((module) => module.learningStyle);
+
+    const userInterests = progress.map((item) => item.category);
+    const userProgress = progress.map((item) => item.progress);
+    const userLearningStyle = progress.map((item) => item.learningStyle);
+
+    const interestScore = userInterests.filter((interest) => pathwayInterests.includes(interest)).length;
+    const progressScore = userProgress.filter((progressItem) => pathwayDifficulty.includes(progressItem)).length;
+    const learningStyleScore = userLearningStyle.filter((learningStyle) => pathwayLearningStyle.includes(learningStyle)).length;
+
+    return interestScore + progressScore + learningStyleScore;
   };
 
-  const calculateProgressScore = (userProgress, pathwayModules) => {
-    const completedModules = userProgress.filter((progress) => progress >= 100);
-    const pathwayModuleIds = pathwayModules.map((module) => module.id);
-    const completedPathwayModules = completedModules.filter((module) => pathwayModuleIds.includes(module.id));
+  const getRecommendedPathwaysWithScore = (progress, pathways) => {
+    const recommendedPathways = pathways.map((pathway) => ({
+      pathway,
+      score: calculatePathwayScore(pathway, progress),
+    }));
 
-    return completedPathwayModules.length / pathwayModules.length;
+    return recommendedPathways.sort((a, b) => b.score - a.score).map((item) => item.pathway);
   };
 
-  const calculateLearningStyleScore = (userLearningStyle, pathwayLearningStyle) => {
-    return userLearningStyle === pathwayLearningStyle ? 1 : 0;
-  };
+  const recommendedPathwaysWithScore = getRecommendedPathwaysWithScore(progress, pathways);
 
   return (
     <div>
@@ -133,7 +142,11 @@ export default function DashboardPage() {
         setCertificatePathway={setCertificatePathway}
       />
       <h2>Recommended Pathways</h2>
-      <PathwayList pathways={recommendedPathways} handlePathwayClick={handlePathwayClick} selectedPathway={selectedPathway} />
+      <PathwayList
+        pathways={recommendedPathwaysWithScore}
+        handlePathwayClick={handlePathwayClick}
+        selectedPathway={selectedPathway}
+      />
     </div>
   );
 }

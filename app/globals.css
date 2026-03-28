@@ -92,6 +92,9 @@
 
   img {
     @apply max-w-full h-auto;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   img[alt=""] {
@@ -176,46 +179,28 @@
   .toggle-dark-mode:hover {
     @apply bg-gray-300 dark:bg-gray-600;
   }
+
+  .meta-tags {
+    display: none;
+  }
+
+  .meta-tags::before {
+    content: "Personalized Learning Pathways";
+    font-size: 1px;
+    color: transparent;
+  }
+
+  .meta-tags::after {
+    content: "A platform for personalized learning pathways";
+    font-size: 1px;
+    color: transparent;
+  }
 }
 
 @layer base {
   :root {
-    --color-contrast: #333;
-    --color-background: #f7f7f7;
+    --meta-title: "Personalized Learning Pathways";
+    --meta-description: "A platform for personalized learning pathways";
+    --meta-keywords: "personalized learning, learning pathways, education";
   }
-
-  html {
-    @apply bg-var(--color-background) dark:bg-var(--color-contrast);
-    font-family: 'Inter', sans-serif;
-  }
-
-  body {
-    @apply text-gray-600 dark:text-gray-300;
-    margin: 0;
-    padding: 0;
-    @apply font-sans;
-    font-size: 16px;
-    line-height: 1.5;
-    role: "application";
-  }
-}
-
-meta {
-  name: "description";
-  content: "Personalized Learning Pathways";
-}
-
-meta {
-  name: "keywords";
-  content: "learning, pathways, personalized";
-}
-
-meta {
-  name: "robots";
-  content: "index, follow";
-}
-
-meta {
-  name: "viewport";
-  content: "width=device-width, initial-scale=1.0";
 }

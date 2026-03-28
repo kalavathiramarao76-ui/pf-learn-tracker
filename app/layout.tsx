@@ -69,35 +69,28 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="author" content="Learn Tracker" />
         <meta name="copyright" content="2024 Learn Tracker" />
-        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </Head>
-      <NextSeo
-        title="Learn Tracker - Unlock Your Potential with Personalized Learning Pathways"
-        description="Discover a world of limitless learning opportunities with our adaptive learning platform, featuring expert-led courses, personalized recommendations, and a supportive community to help you achieve your goals."
-      />
-      <body className="flex flex-col min-h-screen">
+      <body>
         <Header />
-        <main className="flex-1">
-          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap -mx-4">
-              <div className="w-full lg:w-1/4 xl:w-1/5 p-4">
-                <PathwayCategories
-                  categories={pathwayCategories}
-                  selectedCategory={category}
-                  onSelect={handleCategorySelect}
-                />
-              </div>
-              <div className="w-full lg:w-3/4 xl:w-4/5 p-4">
-                <PathwayFilter
-                  filter={filter}
-                  onFilterChange={handleFilterChange}
-                />
-                {children}
-              </div>
+        <div className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+          <div className="flex flex-wrap justify-center mb-4">
+            <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
+              <PathwayFilter
+                filter={filter}
+                onFilterChange={handleFilterChange}
+                placeholder="Search pathways..."
+              />
+            </div>
+            <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
+              <PathwayCategories
+                categories={pathwayCategories}
+                selectedCategory={category}
+                onCategorySelect={handleCategorySelect}
+              />
             </div>
           </div>
-        </main>
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

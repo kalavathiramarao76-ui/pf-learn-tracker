@@ -185,7 +185,16 @@
     transition: background-color 0.2s ease-in-out;
   }
 
-  button:hover {
-    @apply bg-blue-800 dark:bg-blue-500;
+  img {
+    @apply max-w-full h-auto;
+    filter: contrast(1.2);
+  }
+
+  img[alt=""] {
+    @apply hidden;
+  }
+
+  img[alt]:not([alt=""]) {
+    @apply accessible-image;
   }
 }

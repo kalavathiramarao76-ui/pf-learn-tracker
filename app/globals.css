@@ -138,23 +138,59 @@
   }
 
   meta[name="description"] {
-    content: "Personalized Learning Pathways";
+    content: "Discover personalized learning pathways tailored to your needs, interests, and goals. Enhance your skills and knowledge with our adaptive learning platform.";
   }
 
   meta[name="keywords"] {
-    content: "learning, pathways, personalized";
+    content: "personalized learning, adaptive learning, learning pathways, education, skills development, knowledge enhancement";
   }
 
   meta[name="robots"] {
-    content: "index, follow";
+    content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
   }
 
   meta[name="viewport"] {
-    content: "width=device-width, initial-scale=1.0";
+    content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
   }
 
   meta[name="theme-color"] {
     content: var(--bg-color);
+  }
+
+  meta[property="og:title"] {
+    content: "Personalized Learning Pathways";
+  }
+
+  meta[property="og:description"] {
+    content: "Discover personalized learning pathways tailored to your needs, interests, and goals. Enhance your skills and knowledge with our adaptive learning platform.";
+  }
+
+  meta[property="og:image"] {
+    content: "/path/to/image.jpg";
+  }
+
+  meta[property="og:url"] {
+    content: "https://example.com";
+  }
+
+  meta[property="og:site_name"] {
+    content: "Personalized Learning Pathways";
+  }
+
+  meta[property="twitter:card"] {
+    content: "summary_large_image";
+  }
+
+  meta[property="twitter:title"] {
+    content: "Personalized Learning Pathways";
+  }
+
+  meta[property="twitter:description"] {
+    content: "Discover personalized learning pathways tailored to your needs, interests, and goals. Enhance your skills and knowledge with our adaptive learning platform.";
+  }
+
+  meta[property="twitter:image"] {
+    content: "/path/to/image.jpg";
   }
 }
 
@@ -171,26 +207,5 @@
     padding: 1rem;
     border-radius: 0.25rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    role: "region";
-  }
-
-  .card-header {
-    background-color: #f7f7f7;
-    padding: 0.5rem 1rem;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    role: "heading";
-  }
-
-  .card-body {
-    padding: 1rem;
-    role: "contentinfo";
-  }
-
-  .card-footer {
-    background-color: #f7f7f7;
-    padding: 0.5rem 1rem;
-    border-bottom-left-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
   }
 }

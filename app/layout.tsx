@@ -71,40 +71,37 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"
-        />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="Learn Tracker" />
       </Head>
-      <body className="overflow-x-hidden">
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
-          <Header />
-          <div className="flex flex-col md:flex-row justify-center items-center md:justify-between mt-4 md:mt-8 lg:mt-12 xl:mt-16">
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-8 lg:mb-12 xl:mb-16 animate__animated animate__fadeInLeft">
-              <PathwayFilter filter={filter} onFilterChange={handleFilterChange} />
-            </div>
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-8 lg:mb-12 xl:mb-16 animate__animated animate__fadeInRight">
-              <PathwayCategories
-                categories={pathwayCategories}
-                selectedCategory={category}
-                onCategorySelect={handleCategorySelect}
-              />
-            </div>
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-8 lg:mb-12 xl:mb-16 animate__animated animate__fadeInUp">
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={handleSearch}
-                placeholder="Search pathways"
-                className="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div className="mt-4 md:mt-8 lg:mt-12 xl:mt-16 animate__animated animate__fadeInUp">
+      <body className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <PathwayFilter
+              filter={filter}
+              onFilterChange={handleFilterChange}
+              className="mb-4"
+            />
+            <PathwayCategories
+              categories={pathwayCategories}
+              selectedCategory={category}
+              onCategorySelect={handleCategorySelect}
+              className="mb-4"
+            />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={handleSearch}
+              placeholder="Search"
+              className="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
             {children}
           </div>
-          <Footer />
-        </div>
+        </main>
+        <Footer />
       </body>
     </html>
   );

@@ -138,11 +138,11 @@
   }
 
   meta[name="description"] {
-    content: "Discover personalized learning pathways tailored to your needs, interests, and goals. Enhance your skills and knowledge with our adaptive learning platform.";
+    content: "Unlock personalized learning pathways tailored to your unique needs, interests, and goals. Discover adaptive learning experiences that enhance your skills and knowledge with our innovative platform.";
   }
 
   meta[name="keywords"] {
-    content: "personalized learning, adaptive learning, learning pathways, education, skills development, knowledge enhancement";
+    content: "personalized learning, adaptive learning, learning pathways, education, skills development, knowledge enhancement, online learning, e-learning, educational technology";
   }
 
   meta[name="robots"] {
@@ -154,7 +154,7 @@
   }
 
   meta[name="theme-color"] {
-    content: var(--bg-color);
+    content: "#3498db";
   }
 
   meta[property="og:title"] {
@@ -162,11 +162,11 @@
   }
 
   meta[property="og:description"] {
-    content: "Discover personalized learning pathways tailored to your needs, interests, and goals. Enhance your skills and knowledge with our adaptive learning platform.";
+    content: "Unlock personalized learning pathways tailored to your unique needs, interests, and goals. Discover adaptive learning experiences that enhance your skills and knowledge with our innovative platform.";
   }
 
   meta[property="og:image"] {
-    content: "/path/to/image.jpg";
+    content: "/logo.png";
   }
 
   meta[property="og:url"] {
@@ -177,8 +177,12 @@
     content: "Personalized Learning Pathways";
   }
 
+  meta[property="og:type"] {
+    content: "website";
+  }
+
   meta[property="twitter:card"] {
-    content: "summary_large_image";
+    content: "summary";
   }
 
   meta[property="twitter:title"] {
@@ -186,26 +190,32 @@
   }
 
   meta[property="twitter:description"] {
-    content: "Discover personalized learning pathways tailored to your needs, interests, and goals. Enhance your skills and knowledge with our adaptive learning platform.";
+    content: "Unlock personalized learning pathways tailored to your unique needs, interests, and goals. Discover adaptive learning experiences that enhance your skills and knowledge with our innovative platform.";
   }
 
   meta[property="twitter:image"] {
-    content: "/path/to/image.jpg";
-  }
-}
-
-@layer components {
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    role: "main";
+    content: "/logo.png";
   }
 
-  .card {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  meta[property="twitter:site"] {
+    content: "@example";
+  }
+
+  script[type="application/ld+json"] {
+    content: '
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Personalized Learning Pathways",
+        "description": "Unlock personalized learning pathways tailored to your unique needs, interests, and goals. Discover adaptive learning experiences that enhance your skills and knowledge with our innovative platform.",
+        "image": "/logo.png",
+        "url": "https://example.com",
+        "sameAs": [
+          "https://www.facebook.com/example",
+          "https://twitter.com/example",
+          "https://www.linkedin.com/company/example"
+        ]
+      }
+    ';
   }
 }

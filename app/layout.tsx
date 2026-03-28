@@ -28,6 +28,7 @@ export default function RootLayout({
     { id: 3, name: 'Creative Skills' },
   ]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     setTheme(darkMode ? 'dark' : 'light');
@@ -54,6 +55,10 @@ export default function RootLayout({
     setSearchQuery(event.target.value);
   };
 
+  const handleNavToggle = () => {
+    setNavOpen(!navOpen);
+  };
+
   return (
     <html lang="en" className={theme}>
       <Head>
@@ -71,38 +76,144 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="Learn Tracker" />
       </Head>
-      <body className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <PathwayFilter
-              filter={filter}
-              onFilterChange={handleFilterChange}
-              className="mb-4"
-            />
-            <PathwayCategories
-              categories={pathwayCategories}
-              selectedCategory={category}
-              onCategorySelect={handleCategorySelect}
-              className="mb-4"
-            />
-            <input
-              type="search"
-              value={searchQuery}
-              onChange={handleSearch}
-              placeholder="Search"
-              className="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {children}
-          </div>
+      <body>
+        <Header>
+          <nav className={`nav ${navOpen ? 'nav-open' : ''}`}>
+            <button className="nav-toggle" onClick={handleNavToggle}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <ul className="nav-links">
+              <li>
+                <Link href="#">Home</Link>
+              </li>
+              <li>
+                <Link href="#">Learning Pathways</Link>
+              </li>
+              <li>
+                <Link href="#">Categories</Link>
+                <ul className="nav-submenu">
+                  {pathwayCategories.map((category) => (
+                    <li key={category.id}>
+                      <Link href="#" onClick={() => handleCategorySelect(category.id)}>
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li>
+                <Link href="#">Search</Link>
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  placeholder="Search learning pathways"
+                />
+              </li>
+            </ul>
+          </nav>
+        </Header>
+        <main>
+          <PathwayFilter filter={filter} onFilterChange={handleFilterChange} />
+          <PathwayCategories
+            categories={pathwayCategories}
+            selectedCategory={category}
+            onCategoryChange={handleCategoryChange}
+          />
+          {children}
         </main>
         <Footer />
       </body>
+      <style jsx>
+        {`
+          .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #333;
+            color: #fff;
+          }
+
+          .nav-toggle {
+            display: none;
+            cursor: pointer;
+          }
+
+          .nav-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+          }
+
+          .nav-links li {
+            margin-right: 20px;
+          }
+
+          .nav-links a {
+            color: #fff;
+            text-decoration: none;
+          }
+
+          .nav-submenu {
+            display: none;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            position: absolute;
+            top: 100%;
+            left: 0;
+          }
+
+          .nav-links li:hover .nav-submenu {
+            display: block;
+          }
+
+          .nav-submenu li {
+            margin-right: 0;
+          }
+
+          .nav-submenu a {
+            display: block;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+          }
+
+          @media (max-width: 768px) {
+            .nav-toggle {
+              display: block;
+            }
+
+            .nav-links {
+              display: none;
+              flex-direction: column;
+              align-items: flex-start;
+              padding: 1rem;
+              background-color: #333;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+            }
+
+            .nav-links li {
+              margin-right: 0;
+            }
+
+            .nav-open .nav-links {
+              display: flex;
+            }
+          }
+        `}
+      </style>
     </html>
   );
 }

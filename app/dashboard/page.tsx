@@ -73,84 +73,49 @@ export default function DashboardPage() {
       const pathwayCategory = pathway.category;
       const pathwayLearningStyle = pathway.learningStyle;
 
-      const interestMatch = userInterests.includes(pathwayCategory);
-      const progressMatch = userProgress.includes(pathway.progress);
-      const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
+      const interestScore = userInterests.includes(pathwayCategory) ? 1 : 0;
+      const progressScore = userProgress.includes(pathwayCategory) ? 1 : 0;
+      const learningStyleScore = userLearningStyle.includes(pathwayLearningStyle) ? 1 : 0;
 
-      const interestWeight = 0.4;
-      const progressWeight = 0.3;
-      const learningStyleWeight = 0.3;
+      const totalScore = interestScore + progressScore + learningStyleScore;
 
-      const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
-
-      return score > 0.5;
+      return totalScore >= 2;
     });
 
     return recommendedPathways;
   };
 
-  const getAdvancedRecommendedPathways = (progress, pathways) => {
+  const getWeightedRecommendedPathways = (progress, pathways) => {
     const userInterests = progress.map((item) => item.category);
     const userProgress = progress.map((item) => item.progress);
     const userLearningStyle = progress.map((item) => item.learningStyle);
 
-    const recommendedPathways = pathways.map((pathway) => {
+    const weightedPathways = pathways.map((pathway) => {
       const pathwayCategory = pathway.category;
       const pathwayLearningStyle = pathway.learningStyle;
 
-      const interestMatch = userInterests.includes(pathwayCategory);
-      const progressMatch = userProgress.includes(pathway.progress);
-      const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
+      const interestScore = userInterests.includes(pathwayCategory) ? 1 : 0;
+      const progressScore = userProgress.includes(pathwayCategory) ? 1 : 0;
+      const learningStyleScore = userLearningStyle.includes(pathwayLearningStyle) ? 1 : 0;
 
-      const interestWeight = 0.4;
-      const progressWeight = 0.3;
-      const learningStyleWeight = 0.3;
+      const totalScore = interestScore + progressScore + learningStyleScore;
 
-      const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
-
-      return { pathway, score };
+      return { ...pathway, score: totalScore };
     });
 
-    recommendedPathways.sort((a, b) => b.score - a.score);
-
-    return recommendedPathways.slice(0, 5).map((item) => item.pathway);
+    return weightedPathways.sort((a, b) => b.score - a.score).slice(0, 5);
   };
 
   return (
     <div>
       <SEO title="Personalized Learning Pathways" />
-      <PathwayList
-        pathways={sortedAndFilteredPathways}
-        handlePathwayClick={handlePathwayClick}
-        selectedPathway={selectedPathway}
-      />
-      <PathwayFilter
-        filterBy={filterBy}
-        setFilterBy={setFilterBy}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-      <PathwaySort
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
-      />
-      <CreatePathwayForm
-        isCreatingPathway={isCreatingPathway}
-        setIsCreatingPathway={setIsCreatingPathway}
-      />
-      <CertificateModal
-        certificateModalOpen={certificateModalOpen}
-        setCertificateModalOpen={setCertificateModalOpen}
-        certificatePathway={certificatePathway}
-      />
+      <PathwayFilter filterBy={filterBy} setFilterBy={setFilterBy} />
+      <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
+      <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
+      <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
+      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />
       <h2>Recommended Pathways</h2>
-      <PathwayList
-        pathways={getAdvancedRecommendedPathways(progress, pathways)}
-        handlePathwayClick={handlePathwayClick}
-        selectedPathway={selectedPathway}
-      />
+      <PathwayList pathways={getWeightedRecommendedPathways(progress, pathways)} handlePathwayClick={handlePathwayClick} />
     </div>
   );
 }

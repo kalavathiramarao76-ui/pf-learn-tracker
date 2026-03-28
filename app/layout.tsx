@@ -74,146 +74,43 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon" />
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
-        <meta name="theme-color" content="#000" />
+        <link rel="apple-touch-icon" href="/favicon-180x180.ico" sizes="180x180" type="image/x-icon" />
       </Head>
       <body>
-        <Header>
-          <nav className={`nav ${navOpen ? 'nav-open' : ''}`}>
-            <button className="nav-toggle" onClick={handleNavToggle}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-            <ul className="nav-links">
-              <li>
-                <Link href="#">Home</Link>
-              </li>
-              <li>
-                <Link href="#">Learning Pathways</Link>
-              </li>
-              <li>
-                <Link href="#">Categories</Link>
-                <ul className="nav-submenu">
-                  {pathwayCategories.map((category) => (
-                    <li key={category.id}>
-                      <Link href="#" onClick={() => handleCategorySelect(category.id)}>
-                        {category.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li>
-                <Link href="#">Search</Link>
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  placeholder="Search learning pathways"
-                />
-              </li>
-            </ul>
-          </nav>
-        </Header>
-        <main>
-          <PathwayFilter filter={filter} onFilterChange={handleFilterChange} />
+        <Header
+          navOpen={navOpen}
+          handleNavToggle={handleNavToggle}
+          searchQuery={searchQuery}
+          handleSearch={handleSearch}
+        />
+        <nav className={`nav ${navOpen ? 'nav-open' : ''}`}>
+          <ul>
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              <Link href="/pathways">Pathways</Link>
+            </li>
+            <li>
+              <Link href="/courses">Courses</Link>
+            </li>
+          </ul>
+          <PathwayFilter
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+            categories={pathwayCategories}
+            handleCategorySelect={handleCategorySelect}
+          />
           <PathwayCategories
             categories={pathwayCategories}
-            selectedCategory={category}
-            onCategoryChange={handleCategoryChange}
+            handleCategorySelect={handleCategorySelect}
           />
+        </nav>
+        <main>
           {children}
         </main>
         <Footer />
       </body>
-      <style jsx>
-        {`
-          .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: #333;
-            color: #fff;
-          }
-
-          .nav-toggle {
-            display: none;
-            cursor: pointer;
-          }
-
-          .nav-links {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-          }
-
-          .nav-links li {
-            margin-right: 20px;
-          }
-
-          .nav-links a {
-            color: #fff;
-            text-decoration: none;
-          }
-
-          .nav-submenu {
-            display: none;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            background-color: #333;
-            position: absolute;
-            top: 100%;
-            left: 0;
-          }
-
-          .nav-links li:hover .nav-submenu {
-            display: block;
-          }
-
-          .nav-submenu li {
-            margin-right: 0;
-          }
-
-          .nav-submenu a {
-            display: block;
-            padding: 10px;
-            color: #fff;
-            text-decoration: none;
-          }
-
-          @media (max-width: 768px) {
-            .nav-toggle {
-              display: block;
-            }
-
-            .nav-links {
-              display: none;
-              flex-direction: column;
-              align-items: flex-start;
-              padding: 1rem;
-              background-color: #333;
-              position: absolute;
-              top: 100%;
-              left: 0;
-              width: 100%;
-            }
-
-            .nav-links li {
-              margin-right: 0;
-            }
-
-            .nav-open .nav-links {
-              display: flex;
-            }
-          }
-        `}
-      </style>
     </html>
   );
 }

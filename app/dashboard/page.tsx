@@ -73,37 +73,24 @@ export default function DashboardPage() {
       const pathwayCategory = pathway.category;
       const pathwayLearningStyle = pathway.learningStyle;
 
-      const interestScore = userInterests.includes(pathwayCategory) ? 1 : 0;
-      const progressScore = userProgress.includes(pathwayCategory) ? 1 : 0;
-      const learningStyleScore = userLearningStyle.includes(pathwayLearningStyle) ? 1 : 0;
+      const isCategoryMatch = userInterests.includes(pathwayCategory);
+      const isLearningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
 
-      const totalScore = interestScore + progressScore + learningStyleScore;
+      const pathwayProgress = userProgress.reduce((acc, curr) => {
+        if (curr.category === pathwayCategory) {
+          acc += curr.progress;
+        }
+        return acc;
+      }, 0);
 
-      return totalScore >= 2;
+      const pathwayScore = isCategoryMatch ? 1 : 0.5;
+      pathwayScore += isLearningStyleMatch ? 1 : 0.5;
+      pathwayScore += pathwayProgress / 100;
+
+      return pathwayScore > 1.5;
     });
 
     return recommendedPathways;
-  };
-
-  const getWeightedRecommendedPathways = (progress, pathways) => {
-    const userInterests = progress.map((item) => item.category);
-    const userProgress = progress.map((item) => item.progress);
-    const userLearningStyle = progress.map((item) => item.learningStyle);
-
-    const weightedPathways = pathways.map((pathway) => {
-      const pathwayCategory = pathway.category;
-      const pathwayLearningStyle = pathway.learningStyle;
-
-      const interestScore = userInterests.includes(pathwayCategory) ? 1 : 0;
-      const progressScore = userProgress.includes(pathwayCategory) ? 1 : 0;
-      const learningStyleScore = userLearningStyle.includes(pathwayLearningStyle) ? 1 : 0;
-
-      const totalScore = interestScore + progressScore + learningStyleScore;
-
-      return { ...pathway, score: totalScore };
-    });
-
-    return weightedPathways.sort((a, b) => b.score - a.score).slice(0, 5);
   };
 
   return (
@@ -113,9 +100,7 @@ export default function DashboardPage() {
       <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
-      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />
-      <h2>Recommended Pathways</h2>
-      <PathwayList pathways={getWeightedRecommendedPathways(progress, pathways)} handlePathwayClick={handlePathwayClick} />
+      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
     </div>
   );
 }

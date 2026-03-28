@@ -150,11 +150,11 @@
   }
 
   meta[name="viewport"] {
-    content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+    content: "width=device-width, initial-scale=1.0";
   }
 
-  meta[name="theme-color"] {
-    content: "#3498db";
+  meta[name="title"] {
+    content: "Personalized Learning Pathways";
   }
 
   meta[property="og:title"] {
@@ -166,23 +166,15 @@
   }
 
   meta[property="og:image"] {
-    content: "/logo.png";
+    content: "/images/learning-pathways.jpg";
   }
 
   meta[property="og:url"] {
     content: "https://example.com";
   }
 
-  meta[property="og:site_name"] {
-    content: "Personalized Learning Pathways";
-  }
-
-  meta[property="og:type"] {
-    content: "website";
-  }
-
   meta[property="twitter:card"] {
-    content: "summary";
+    content: "summary_large_image";
   }
 
   meta[property="twitter:title"] {
@@ -194,28 +186,31 @@
   }
 
   meta[property="twitter:image"] {
-    content: "/logo.png";
+    content: "/images/learning-pathways.jpg";
   }
 
   meta[property="twitter:site"] {
     content: "@example";
   }
 
-  script[type="application/ld+json"] {
-    content: '
-      {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "Personalized Learning Pathways",
-        "description": "Unlock personalized learning pathways tailored to your unique needs, interests, and goals. Discover adaptive learning experiences that enhance your skills and knowledge with our innovative platform.",
-        "image": "/logo.png",
-        "url": "https://example.com",
-        "sameAs": [
-          "https://www.facebook.com/example",
-          "https://twitter.com/example",
-          "https://www.linkedin.com/company/example"
-        ]
-      }
-    ';
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+    image-orientation: from-image;
+  }
+
+  img[alt=""] {
+    display: none;
+  }
+
+  img[alt] {
+    display: block;
+  }
+
+  img[alt]:before {
+    content: attr(alt);
+    display: none;
   }
 }

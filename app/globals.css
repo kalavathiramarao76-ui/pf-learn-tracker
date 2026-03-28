@@ -36,6 +36,7 @@
     @apply font-sans;
     font-size: 16px;
     line-height: 1.5;
+    role: "application";
   }
 
   a {
@@ -82,6 +83,7 @@
     @apply py-2 px-4;
     @apply rounded;
     transition: background-color 0.2s ease-in-out;
+    role: "button";
   }
 
   button:hover {
@@ -101,27 +103,33 @@
   .container {
     @apply mx-auto max-w-7xl px-4 py-12;
     @apply md:px-6 lg:px-8 xl:px-10;
+    role: "main";
   }
 
   .card {
     @apply bg-white dark:bg-gray-800 shadow rounded p-4;
     @apply md:p-6 lg:p-8 xl:p-10;
+    role: "region";
   }
 
   .card-header {
     @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-t;
+    role: "heading";
   }
 
   .card-body {
     @apply py-4 px-4;
+    role: "contentinfo";
   }
 
   .card-footer {
     @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-b;
+    role: "contentinfo";
   }
 
   .image-container {
     @apply flex justify-center;
+    role: "figure";
   }
 
   .image-container img {
@@ -162,6 +170,7 @@
   .toggle-dark-mode {
     @apply bg-gray-200 dark:bg-gray-700 py-2 px-4 rounded;
     @apply cursor-pointer;
+    role: "button";
   }
 
   .toggle-dark-mode:hover {
@@ -187,53 +196,26 @@
     @apply font-sans;
     font-size: 16px;
     line-height: 1.5;
-  }
-
-  img {
-    @apply max-w-full h-auto;
-    @apply object-cover object-center;
-  }
-
-  img[alt=""] {
-    @apply hidden;
-  }
-
-  .image-container {
-    @apply flex justify-center;
-  }
-
-  .image-container img {
-    @apply max-w-full h-auto;
-    @apply object-cover object-center;
+    role: "application";
   }
 }
 
-@layer components {
-  .image-container {
-    @apply flex justify-center;
-  }
-
-  .image-container img {
-    @apply max-w-full h-auto;
-    @apply object-cover object-center;
-  }
+meta {
+  name: "description";
+  content: "Personalized Learning Pathways";
 }
 
-@layer utilities {
-  .accessible-image {
-    @apply max-w-full h-auto;
-  }
+meta {
+  name: "keywords";
+  content: "learning, pathways, personalized";
+}
 
-  .accessible-image::after {
-    content: attr(alt);
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
-  }
+meta {
+  name: "robots";
+  content: "index, follow";
+}
+
+meta {
+  name: "viewport";
+  content: "width=device-width, initial-scale=1.0";
 }

@@ -70,23 +70,16 @@ export default function DashboardPage() {
     const userLearningStyle = progress.map((item) => item.learningStyle);
 
     const recommendedPathways = pathways.filter((pathway) => {
-      const pathwayCategory = pathway.category;
-      const pathwayModules = pathway.modules;
+      const pathwayInterests = pathway.modules.map((module) => module.category);
+      const pathwayLearningStyle = pathway.modules.map((module) => module.learningStyle);
 
-      // Calculate the similarity between user interests and pathway category
-      const interestSimilarity = userInterests.includes(pathwayCategory) ? 1 : 0;
+      const interestMatch = userInterests.some((interest) => pathwayInterests.includes(interest));
+      const progressMatch = userProgress.some((progressItem) => progressItem > 0 && pathway.modules.some((module) => module.progress > 0));
+      const learningStyleMatch = userLearningStyle.some((style) => pathwayLearningStyle.includes(style));
 
-      // Calculate the similarity between user progress and pathway modules
-      const progressSimilarity = pathwayModules.some((module) => userProgress.includes(module.progress)) ? 1 : 0;
+      const score = interestMatch + progressMatch + learningStyleMatch;
 
-      // Calculate the similarity between user learning style and pathway learning style
-      const learningStyleSimilarity = userLearningStyle.includes(pathway.learningStyle) ? 1 : 0;
-
-      // Calculate the overall similarity score
-      const similarityScore = interestSimilarity + progressSimilarity + learningStyleSimilarity;
-
-      // Return pathways with a similarity score greater than 1
-      return similarityScore > 1;
+      return score >= 2;
     });
 
     return recommendedPathways;
@@ -100,10 +93,9 @@ export default function DashboardPage() {
       <PathwayFilter filterBy={filterBy} setFilterBy={setFilterBy} />
       <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
+      <PathwayList pathways={sortedAndFilteredRecommendedPathways} handlePathwayClick={handlePathwayClick} title="Recommended Pathways" />
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
-      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
-      <h2>Recommended Pathways</h2>
-      <PathwayList pathways={sortedAndFilteredRecommendedPathways} handlePathwayClick={handlePathwayClick} />
+      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />
     </div>
   );
 }

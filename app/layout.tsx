@@ -76,37 +76,38 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"
         />
       </Head>
-      <body className="overflow-x-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+      <body className="animate__animated animate__fadeIn">
+        <div className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
           <Header />
-          <div className="flex flex-col md:flex-row justify-center items-center py-12">
-            <div className="w-full md:w-1/2 xl:w-1/3 p-6">
+          <div className="flex flex-wrap justify-center mb-4">
+            <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
               <PathwayFilter
                 filter={filter}
-                onFilterChange={handleFilterChange}
-                className="animate__animated animate__fadeInLeft"
+                handleFilterChange={handleFilterChange}
+                className="animate__animated animate__slideInLeft"
               />
             </div>
-            <div className="w-full md:w-1/2 xl:w-1/3 p-6">
+            <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
               <PathwayCategories
-                categories={pathwayCategories}
-                selectedCategory={category}
-                onCategorySelect={handleCategorySelect}
-                className="animate__animated animate__fadeInRight"
+                category={category}
+                handleCategoryChange={handleCategoryChange}
+                handleCategorySelect={handleCategorySelect}
+                pathwayCategories={pathwayCategories}
+                className="animate__animated animate__slideInRight"
               />
             </div>
           </div>
-          <div className="py-12">
+          <div className="flex justify-center mb-4">
             <input
               type="search"
               value={searchQuery}
               onChange={handleSearch}
-              placeholder="Search for courses..."
-              className="w-full p-4 pl-10 text-sm text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 animate__animated animate__fadeInUp"
+              placeholder="Search pathways..."
+              className="w-full lg:w-1/2 xl:w-1/3 p-4 pl-10 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600"
             />
           </div>
-          <div className="py-12">{children}</div>
-          <Footer className="animate__animated animate__fadeInUp" />
+          <div className="flex flex-wrap justify-center">{children}</div>
+          <Footer className="animate__animated animate__slideInUp" />
         </div>
       </body>
     </html>

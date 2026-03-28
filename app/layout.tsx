@@ -71,43 +71,35 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
-        />
       </Head>
-      <body className="font-open-sans">
-        <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-          <Header />
-          <div className="flex flex-wrap justify-center mb-4 md:mb-6 lg:mb-8">
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 md:p-6 lg:p-8">
-              <PathwayFilter
-                filter={filter}
-                onFilterChange={handleFilterChange}
-              />
-            </div>
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 md:p-6 lg:p-8">
-              <PathwayCategories
-                categories={pathwayCategories}
-                selectedCategory={category}
-                onCategorySelect={handleCategorySelect}
-              />
-            </div>
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 md:p-6 lg:p-8">
+      <body className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8">
+          <div className="flex flex-wrap justify-center mb-4">
+            <PathwayFilter
+              filter={filter}
+              onFilterChange={handleFilterChange}
+              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+            />
+            <PathwayCategories
+              categories={pathwayCategories}
+              selectedCategory={category}
+              onCategorySelect={handleCategorySelect}
+              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+            />
+            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
               <input
                 type="search"
                 value={searchQuery}
                 onChange={handleSearch}
                 placeholder="Search pathways"
-                className="w-full p-4 pl-10 text-sm text-gray-700 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-gray-500"
               />
             </div>
           </div>
-          <div className="flex flex-wrap justify-center mb-4 md:mb-6 lg:mb-8">
-            {children}
-          </div>
-          <Footer />
-        </div>
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

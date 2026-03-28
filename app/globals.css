@@ -179,28 +179,4 @@
   .toggle-dark-mode:hover {
     @apply bg-gray-300 dark:bg-gray-600;
   }
-
-  .meta-tags {
-    display: none;
-  }
-
-  .meta-tags::before {
-    content: "Personalized Learning Pathways";
-    font-size: 1px;
-    color: transparent;
-  }
-
-  .meta-tags::after {
-    content: "A platform for personalized learning pathways";
-    font-size: 1px;
-    color: transparent;
-  }
-}
-
-@layer base {
-  :root {
-    --meta-title: "Personalized Learning Pathways";
-    --meta-description: "A platform for personalized learning pathways";
-    --meta-keywords: "personalized learning, learning pathways, education";
-  }
 }

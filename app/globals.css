@@ -181,21 +181,59 @@
   }
 
   body {
-    @apply text-var(--color-contrast) dark:text-var(--color-background);
+    @apply text-gray-600 dark:text-gray-300;
     margin: 0;
     padding: 0;
+    @apply font-sans;
+    font-size: 16px;
+    line-height: 1.5;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
-    color: var(--color-contrast);
+  img {
+    @apply max-w-full h-auto;
+    @apply object-cover object-center;
   }
 
-  button {
-    @apply bg-blue-600 dark:bg-blue-400;
-    @apply text-var(--color-background);
-    @apply py-2 px-4;
-    @apply rounded;
-    transition: background-color 0.2s ease-in-out;
+  img[alt=""] {
+    @apply hidden;
+  }
+
+  .image-container {
+    @apply flex justify-center;
+  }
+
+  .image-container img {
+    @apply max-w-full h-auto;
+    @apply object-cover object-center;
+  }
+}
+
+@layer components {
+  .image-container {
+    @apply flex justify-center;
+  }
+
+  .image-container img {
+    @apply max-w-full h-auto;
+    @apply object-cover object-center;
+  }
+}
+
+@layer utilities {
+  .accessible-image {
+    @apply max-w-full h-auto;
+  }
+
+  .accessible-image::after {
+    content: attr(alt);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
   }
 }

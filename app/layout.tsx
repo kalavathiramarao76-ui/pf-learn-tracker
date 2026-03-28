@@ -71,33 +71,43 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="Learn Tracker" />
-        <meta name="copyright" content="2024 Learn Tracker" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"
+        />
       </Head>
-      <body>
-        <Header />
-        <div className="search-bar">
-          <input
-            type="search"
-            value={searchQuery}
-            onChange={handleSearch}
-            placeholder="Search pathways"
-          />
+      <body className="overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <Header />
+          <div className="flex flex-col md:flex-row justify-center items-center py-12">
+            <div className="w-full md:w-1/2 xl:w-1/3 p-6">
+              <PathwayFilter
+                filter={filter}
+                onFilterChange={handleFilterChange}
+                className="animate__animated animate__fadeInLeft"
+              />
+            </div>
+            <div className="w-full md:w-1/2 xl:w-1/3 p-6">
+              <PathwayCategories
+                categories={pathwayCategories}
+                selectedCategory={category}
+                onCategorySelect={handleCategorySelect}
+                className="animate__animated animate__fadeInRight"
+              />
+            </div>
+          </div>
+          <div className="py-12">
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={handleSearch}
+              placeholder="Search for courses..."
+              className="w-full p-4 pl-10 text-sm text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 animate__animated animate__fadeInUp"
+            />
+          </div>
+          <div className="py-12">{children}</div>
+          <Footer className="animate__animated animate__fadeInUp" />
         </div>
-        <div className="filter-categories">
-          <PathwayFilter
-            filter={filter}
-            onFilterChange={handleFilterChange}
-          />
-          <PathwayCategories
-            categories={pathwayCategories}
-            selectedCategory={category}
-            onCategorySelect={handleCategorySelect}
-          />
-        </div>
-        {children}
-        <Footer />
       </body>
     </html>
   );

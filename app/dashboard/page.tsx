@@ -71,20 +71,28 @@ export default function DashboardPage() {
 
     const recommendedPathways = pathways.filter((pathway) => {
       const pathwayCategory = pathway.category;
-      const pathwayLearningStyle = pathway.learningStyle;
       const pathwayModules = pathway.modules;
 
-      const interestScore = userInterests.includes(pathwayCategory) ? 1 : 0;
-      const progressScore = userProgress.includes(pathwayCategory) ? 1 : 0;
-      const learningStyleScore = userLearningStyle.includes(pathwayLearningStyle) ? 1 : 0;
-      const moduleScore = pathwayModules.length > 0 ? 1 : 0;
+      // Calculate the similarity between user interests and pathway category
+      const interestSimilarity = userInterests.includes(pathwayCategory) ? 1 : 0;
 
-      const score = interestScore + progressScore + learningStyleScore + moduleScore;
-      return score >= 2;
+      // Calculate the similarity between user progress and pathway modules
+      const progressSimilarity = pathwayModules.some((module) => userProgress.includes(module.progress)) ? 1 : 0;
+
+      // Calculate the similarity between user learning style and pathway learning style
+      const learningStyleSimilarity = userLearningStyle.includes(pathway.learningStyle) ? 1 : 0;
+
+      // Calculate the overall similarity score
+      const similarityScore = interestSimilarity + progressSimilarity + learningStyleSimilarity;
+
+      // Return pathways with a similarity score greater than 1
+      return similarityScore > 1;
     });
 
     return recommendedPathways;
   };
+
+  const sortedAndFilteredRecommendedPathways = getSortedPathways(recommendedPathways);
 
   return (
     <div>
@@ -94,18 +102,8 @@ export default function DashboardPage() {
       <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
       <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
-      <div>
-        <h2>Recommended Pathways</h2>
-        <ul>
-          {recommendedPathways.map((pathway) => (
-            <li key={pathway.id}>
-              <Link href={`/learning-path/${pathway.id}`}>
-                {pathway.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h2>Recommended Pathways</h2>
+      <PathwayList pathways={sortedAndFilteredRecommendedPathways} handlePathwayClick={handlePathwayClick} />
     </div>
   );
 }

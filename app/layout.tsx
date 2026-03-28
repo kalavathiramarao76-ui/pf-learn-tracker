@@ -9,6 +9,8 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { NextSeo } from 'next-seo';
+import PathwayFilter from '../components/PathwayFilter';
+import PathwayCategories from '../components/PathwayCategories';
 
 export default function RootLayout({
   children,
@@ -18,10 +20,20 @@ export default function RootLayout({
   const { theme, setTheme } = useTheme();
   const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
   const router = useRouter();
+  const [filter, setFilter] = useState('');
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     setTheme(darkMode ? 'dark' : 'light');
   }, [darkMode, setTheme]);
+
+  const handleFilterChange = (filter: string) => {
+    setFilter(filter);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setCategory(category);
+  };
 
   return (
     <html lang="en" className={theme}>
@@ -49,27 +61,17 @@ export default function RootLayout({
           title: 'Learn Tracker - Transform Your Career with Personalized Learning',
           description: 'Take the first step towards unlocking your potential with our personalized learning pathways, adaptive assessments, and expert-led courses.',
           images: [
-            {
-              url: '/og-image.png',
-              width: 1200,
-              height: 630,
-              alt: 'Learn Tracker OG Image',
-            },
+            // Add image URLs here
           ],
-          siteName: 'Learn Tracker',
-          locale: 'en_US',
-        }}
-        twitter={{
-          handle: '@learntracker',
-          site: '@learntracker',
-          cardType: 'summary_large_image',
         }}
       />
-      <body>
-        <Header />
+      <Header />
+      <main className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+        <PathwayFilter filter={filter} onFilterChange={handleFilterChange} />
+        <PathwayCategories category={category} onCategoryChange={handleCategoryChange} />
         {children}
-        <Footer />
-      </body>
+      </main>
+      <Footer />
     </html>
   );
 }

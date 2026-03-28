@@ -84,6 +84,14 @@
   button:hover {
     @apply bg-blue-800 dark:bg-blue-500;
   }
+
+  img {
+    @apply max-w-full h-auto;
+  }
+
+  img[alt=""] {
+    @apply hidden;
+  }
 }
 
 @layer components {
@@ -106,10 +114,26 @@
   .card-footer {
     @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-b;
   }
+
+  .image-container {
+    @apply flex justify-center;
+  }
+
+  .image-container img {
+    @apply max-w-full h-auto;
+  }
 }
 
 @layer utilities {
   .dark-mode {
     @apply bg-gray-900 text-gray-300;
+  }
+
+  .high-contrast {
+    @apply bg-white dark:bg-black text-black dark:text-white;
+  }
+
+  .high-contrast img {
+    @apply filter invert;
   }
 }

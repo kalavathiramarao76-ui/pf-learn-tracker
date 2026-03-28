@@ -69,51 +69,42 @@ export default function DashboardPage() {
     const userProgress = progress.map((item) => item.progress);
     const userLearningStyle = progress.map((item) => item.learningStyle);
 
-    const recommendedPathways = pathways.filter((pathway) => {
-      const pathwayInterests = pathway.modules.map((module) => module.category);
-      const pathwayProgress = pathway.modules.map((module) => module.progress);
-      const pathwayLearningStyle = pathway.modules.map((module) => module.learningStyle);
+    const pathwayScores = pathways.map((pathway) => {
+      let score = 0;
 
-      const interestMatch = userInterests.some((interest) => pathwayInterests.includes(interest));
-      const progressMatch = userProgress.some((progressItem) => pathwayProgress.includes(progressItem));
-      const learningStyleMatch = userLearningStyle.some((learningStyle) => pathwayLearningStyle.includes(learningStyle));
+      // Category matching
+      if (userInterests.includes(pathway.category)) {
+        score += 10;
+      }
 
-      const interestScore = interestMatch ? 1 : 0;
-      const progressScore = progressMatch ? 1 : 0;
-      const learningStyleScore = learningStyleMatch ? 1 : 0;
+      // Progress matching
+      const progressMatch = userProgress.find((item) => item.category === pathway.category);
+      if (progressMatch) {
+        score += progressMatch.progress * 5;
+      }
 
-      const totalScore = interestScore + progressScore + learningStyleScore;
+      // Learning style matching
+      const learningStyleMatch = userLearningStyle.find((item) => item.category === pathway.category);
+      if (learningStyleMatch) {
+        if (learningStyleMatch.style === pathway.learningStyle) {
+          score += 10;
+        }
+      }
 
-      return totalScore >= 2;
+      // Module completion rate
+      const moduleCompletionRate = pathway.modules.reduce((acc, module) => {
+        const moduleProgress = progress.find((item) => item.moduleId === module.id);
+        if (moduleProgress) {
+          acc += moduleProgress.progress;
+        }
+        return acc;
+      }, 0) / pathway.modules.length;
+      score += moduleCompletionRate * 10;
+
+      return { pathway, score };
     });
 
-    return recommendedPathways;
-  };
-
-  const getAdvancedRecommendedPathways = (progress, pathways) => {
-    const userInterests = progress.map((item) => item.category);
-    const userProgress = progress.map((item) => item.progress);
-    const userLearningStyle = progress.map((item) => item.learningStyle);
-
-    const recommendedPathways = pathways.map((pathway) => {
-      const pathwayInterests = pathway.modules.map((module) => module.category);
-      const pathwayProgress = pathway.modules.map((module) => module.progress);
-      const pathwayLearningStyle = pathway.modules.map((module) => module.learningStyle);
-
-      const interestMatch = userInterests.some((interest) => pathwayInterests.includes(interest));
-      const progressMatch = userProgress.some((progressItem) => pathwayProgress.includes(progressItem));
-      const learningStyleMatch = userLearningStyle.some((learningStyle) => pathwayLearningStyle.includes(learningStyle));
-
-      const interestScore = interestMatch ? 1 : 0;
-      const progressScore = progressMatch ? 1 : 0;
-      const learningStyleScore = learningStyleMatch ? 1 : 0;
-
-      const totalScore = interestScore + progressScore + learningStyleScore;
-
-      return { pathway, score: totalScore };
-    });
-
-    return recommendedPathways.sort((a, b) => b.score - a.score).map((item) => item.pathway);
+    return pathwayScores.sort((a, b) => b.score - a.score).map((item) => item.pathway);
   };
 
   return (
@@ -124,8 +115,6 @@ export default function DashboardPage() {
       <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
       <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
-      <h2>Recommended Pathways</h2>
-      <PathwayList pathways={getAdvancedRecommendedPathways(progress, pathways)} handlePathwayClick={handlePathwayClick} />
     </div>
   );
 }

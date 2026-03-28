@@ -24,137 +24,185 @@
     font-style: normal;
   }
 
+  :root {
+    --bg-color: #f7f7f7;
+    --bg-color-dark: #1a1d23;
+    --text-color: #333;
+    --text-color-dark: #ccc;
+    --link-color: #3498db;
+    --link-color-dark: #66d9ef;
+    --link-hover-color: #2c6f9e;
+    --link-hover-color-dark: #44a0e6;
+    --button-color: #3498db;
+    --button-color-dark: #66d9ef;
+    --button-hover-color: #2c6f9e;
+    --button-hover-color-dark: #44a0e6;
+  }
+
   html {
-    @apply bg-gray-100 dark:bg-gray-900;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: 'Inter', sans-serif;
   }
 
+  html.dark {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+  }
+
   body {
-    @apply text-gray-600 dark:text-gray-300;
     margin: 0;
     padding: 0;
-    @apply font-sans;
     font-size: 16px;
     line-height: 1.5;
     role: "application";
   }
 
   a {
-    @apply text-blue-600 dark:text-blue-400;
+    color: var(--link-color);
     transition: color 0.2s ease-in-out;
   }
 
   a:hover {
-    @apply text-blue-800 dark:text-blue-500;
+    color: var(--link-hover-color);
+  }
+
+  a.dark {
+    color: var(--link-color-dark);
+  }
+
+  a.dark:hover {
+    color: var(--link-hover-color-dark);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    font-weight: bold;
     color: #333;
   }
 
   h1 {
-    @apply text-4xl;
+    font-size: 2.5rem;
   }
 
   h2 {
-    @apply text-3xl;
+    font-size: 2rem;
   }
 
   h3 {
-    @apply text-2xl;
+    font-size: 1.75rem;
   }
 
   h4 {
-    @apply text-xl;
+    font-size: 1.5rem;
   }
 
   h5 {
-    @apply text-lg;
+    font-size: 1.25rem;
   }
 
   h6 {
-    @apply text-base;
+    font-size: 1rem;
   }
 
   button {
-    @apply bg-blue-600 dark:bg-blue-400;
-    @apply text-white;
-    @apply py-2 px-4;
-    @apply rounded;
+    background-color: var(--button-color);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
     transition: background-color 0.2s ease-in-out;
     role: "button";
   }
 
   button:hover {
-    @apply bg-blue-800 dark:bg-blue-500;
+    background-color: var(--button-hover-color);
+  }
+
+  button.dark {
+    background-color: var(--button-color-dark);
+  }
+
+  button.dark:hover {
+    background-color: var(--button-hover-color-dark);
   }
 
   img {
-    @apply max-w-full h-auto;
-    width: 100%;
+    max-width: 100%;
     height: auto;
     object-fit: contain;
   }
 
   img[alt=""] {
-    @apply hidden;
+    display: none;
   }
 }
 
 @layer components {
   .container {
-    @apply mx-auto max-w-7xl px-4 py-12;
-    @apply md:px-6 lg:px-8 xl:px-10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
     role: "main";
   }
 
   .card {
-    @apply bg-white dark:bg-gray-800 shadow rounded p-4;
-    @apply md:p-6 lg:p-8 xl:p-10;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     role: "region";
   }
 
   .card-header {
-    @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-t;
+    background-color: #f7f7f7;
+    padding: 0.5rem 1rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     role: "heading";
   }
 
   .card-body {
-    @apply py-4 px-4;
+    padding: 1rem;
     role: "contentinfo";
   }
 
   .card-footer {
-    @apply bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-b;
+    background-color: #f7f7f7;
+    padding: 0.5rem 1rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
     role: "contentinfo";
   }
 
   .image-container {
-    @apply flex justify-center;
+    display: flex;
+    justify-content: center;
     role: "figure";
   }
 
   .image-container img {
-    @apply max-w-full h-auto;
+    max-width: 100%;
+    height: auto;
   }
 }
 
 @layer utilities {
   .dark-mode {
-    @apply bg-gray-900 text-gray-300;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
   }
 
   .high-contrast {
-    @apply bg-white dark:bg-black text-black dark:text-white;
+    background-color: #fff;
+    color: #000;
   }
 
   .high-contrast img {
-    @apply filter invert;
+    filter: invert(1);
   }
 
   .accessible-image {
-    @apply max-w-full h-auto;
+    max-width: 100%;
+    height: auto;
   }
 
   .accessible-image::after {
@@ -171,12 +219,14 @@
   }
 
   .toggle-dark-mode {
-    @apply bg-gray-200 dark:bg-gray-700 py-2 px-4 rounded;
-    @apply cursor-pointer;
+    background-color: #f7f7f7;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
     role: "button";
   }
 
   .toggle-dark-mode:hover {
-    @apply bg-gray-300 dark:bg-gray-600;
+    background-color: #eee;
   }
 }

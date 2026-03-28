@@ -71,37 +71,33 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
         <meta name="theme-color" content="#000" />
-        <meta name="color-scheme" content={theme} />
       </Head>
-      <body className="font-sans text-gray-900 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Header />
-          <main id="main" className="mt-10">
+      <body className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8">
+          <div className="flex flex-wrap justify-center mb-4">
             <PathwayFilter
               filter={filter}
               onFilterChange={handleFilterChange}
-              aria-label="Filter pathways"
+              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
             />
             <PathwayCategories
               categories={pathwayCategories}
               selectedCategory={category}
               onCategorySelect={handleCategorySelect}
-              aria-label="Select a category"
+              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
             />
-            <div className="flex justify-center mb-4">
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={handleSearch}
-                placeholder="Search pathways"
-                className="w-full max-w-md px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-gray-500 dark:border-gray-700 dark:focus:ring-gray-800"
-                aria-label="Search pathways"
-              />
-            </div>
-            {children}
-          </main>
-          <Footer />
-        </div>
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={handleSearch}
+              placeholder="Search pathways"
+              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 border border-gray-300 rounded-lg"
+            />
+          </div>
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

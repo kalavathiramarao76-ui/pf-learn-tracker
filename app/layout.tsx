@@ -70,27 +70,25 @@ export default function RootLayout({
         <meta name="author" content="Learn Tracker" />
         <meta name="copyright" content="2024 Learn Tracker" />
       </Head>
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Header />
-        <main className="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
-          <div className="flex flex-wrap justify-center mb-4">
-            <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
-              <PathwayFilter
-                filter={filter}
-                onFilterChange={handleFilterChange}
-                className="mb-4"
-              />
-            </div>
-            <div className="w-full lg:w-1/2 xl:w-1/3 p-6">
-              <PathwayCategories
-                categories={pathwayCategories}
-                selectedCategory={category}
-                onCategorySelect={handleCategorySelect}
-                className="mb-4"
-              />
-            </div>
-          </div>
-          {children}
+        <main className="flex-1 flex flex-col md:flex-row">
+          <aside className="md:w-1/4 lg:w-1/5 xl:w-1/6 p-4 md:p-6 lg:p-8 xl:p-10">
+            <PathwayFilter
+              filter={filter}
+              onFilterChange={handleFilterChange}
+              className="mb-4 md:mb-6 lg:mb-8 xl:mb-10"
+            />
+            <PathwayCategories
+              categories={pathwayCategories}
+              selectedCategory={category}
+              onCategorySelect={handleCategorySelect}
+              className="mt-4 md:mt-6 lg:mt-8 xl:mt-10"
+            />
+          </aside>
+          <section className="md:w-3/4 lg:w-4/5 xl:w-5/6 p-4 md:p-6 lg:p-8 xl:p-10">
+            {children}
+          </section>
         </main>
         <Footer />
       </body>

@@ -71,37 +71,78 @@ export default function DashboardPage() {
 
     const recommendedPathways = pathways.filter((pathway) => {
       const pathwayCategory = pathway.category;
-      const pathwayModules = pathway.modules;
       const pathwayLearningStyle = pathway.learningStyle;
 
       const interestMatch = userInterests.includes(pathwayCategory);
-      const progressMatch = userProgress.includes(pathwayModules.length);
+      const progressMatch = userProgress.includes(pathway.progress);
       const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
 
-      const interestWeight = 0.4;
-      const progressWeight = 0.3;
-      const learningStyleWeight = 0.3;
+      const score = interestMatch + progressMatch + learningStyleMatch;
 
-      const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
-
-      return score > 0.5;
+      return score >= 2;
     });
 
     return recommendedPathways;
   };
 
-  const sortedAndFilteredRecommendedPathways = getSortedPathways(recommendedPathways);
+  const calculatePathwayScore = (pathway, progress) => {
+    const userInterests = progress.map((item) => item.category);
+    const userProgress = progress.map((item) => item.progress);
+    const userLearningStyle = progress.map((item) => item.learningStyle);
+
+    const pathwayCategory = pathway.category;
+    const pathwayLearningStyle = pathway.learningStyle;
+
+    const interestMatch = userInterests.includes(pathwayCategory) ? 1 : 0;
+    const progressMatch = userProgress.includes(pathway.progress) ? 1 : 0;
+    const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle) ? 1 : 0;
+
+    const score = interestMatch + progressMatch + learningStyleMatch;
+
+    return score;
+  };
+
+  const getRecommendedPathwaysWithScore = (progress, pathways) => {
+    const recommendedPathways = pathways.map((pathway) => {
+      const score = calculatePathwayScore(pathway, progress);
+      return { pathway, score };
+    });
+
+    return recommendedPathways.sort((a, b) => b.score - a.score);
+  };
+
+  const getRecommendedPathwaysWithWeightedScore = (progress, pathways) => {
+    const recommendedPathways = pathways.map((pathway) => {
+      const interestMatch = progress.map((item) => item.category).includes(pathway.category) ? 1 : 0;
+      const progressMatch = progress.map((item) => item.progress).includes(pathway.progress) ? 1 : 0;
+      const learningStyleMatch = progress.map((item) => item.learningStyle).includes(pathway.learningStyle) ? 1 : 0;
+
+      const score = interestMatch * 0.4 + progressMatch * 0.3 + learningStyleMatch * 0.3;
+
+      return { pathway, score };
+    });
+
+    return recommendedPathways.sort((a, b) => b.score - a.score);
+  };
 
   return (
     <div>
       <SEO title="Personalized Learning Pathways" />
+      <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <PathwayFilter filterBy={filterBy} setFilterBy={setFilterBy} />
       <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
-      <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
-      <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
-      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
+      {isCreatingPathway && <CreatePathwayForm setIsCreatingPathway={setIsCreatingPathway} />}
+      {certificateModalOpen && <CertificateModal setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />}
       <h2>Recommended Pathways</h2>
-      <PathwayList pathways={sortedAndFilteredRecommendedPathways} handlePathwayClick={handlePathwayClick} />
+      <ul>
+        {recommendedPathways.map((pathway) => (
+          <li key={pathway.id}>
+            <Link href={`/learning-path/${pathway.id}`}>
+              {pathway.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -33,6 +33,9 @@
     @apply text-gray-600 dark:text-gray-300;
     margin: 0;
     padding: 0;
+    @apply font-sans;
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   a {
@@ -97,10 +100,12 @@
 @layer components {
   .container {
     @apply mx-auto max-w-7xl px-4 py-12;
+    @apply md:px-6 lg:px-8 xl:px-10;
   }
 
   .card {
     @apply bg-white dark:bg-gray-800 shadow rounded p-4;
+    @apply md:p-6 lg:p-8 xl:p-10;
   }
 
   .card-header {
@@ -152,6 +157,15 @@
     clip: rect(0,0,0,0);
     white-space: nowrap;
     border: 0;
+  }
+
+  .toggle-dark-mode {
+    @apply bg-gray-200 dark:bg-gray-700 py-2 px-4 rounded;
+    @apply cursor-pointer;
+  }
+
+  .toggle-dark-mode:hover {
+    @apply bg-gray-300 dark:bg-gray-600;
   }
 }
 

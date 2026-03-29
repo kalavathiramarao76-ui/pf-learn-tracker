@@ -178,11 +178,11 @@
   }
 
   meta[name="description"] {
-    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your potential with adaptive learning for career growth and development. Explore our platform to learn more about our personalized learning approach.";
+    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your potential with adaptive learning, expert guidance, and a supportive community.";
   }
 
   meta[name="keywords"] {
-    content: "personalized learning, adaptive learning, career growth, development, online learning, education";
+    content: "personalized learning, adaptive learning, online education, learning pathways, education technology";
   }
 
   meta[name="robots"] {
@@ -198,7 +198,7 @@
   }
 
   meta[property="og:description"] {
-    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your potential with adaptive learning for career growth and development.";
+    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your potential with adaptive learning, expert guidance, and a supportive community.";
   }
 
   meta[property="og:image"] {
@@ -222,7 +222,7 @@
   }
 
   meta[property="twitter:description"] {
-    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your potential with adaptive learning for career growth and development.";
+    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your potential with adaptive learning, expert guidance, and a supportive community.";
   }
 
   meta[property="twitter:image"] {
@@ -232,4 +232,3 @@
   meta[property="twitter:site"] {
     content: "@PersonalizedLearningPathways";
   }
-}

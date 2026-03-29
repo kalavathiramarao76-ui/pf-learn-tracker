@@ -1,5 +1,3 @@
-use client;
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -90,54 +88,84 @@ export default function RootLayout({
     setIsSubCategoryDropdownOpen(!isSubCategoryDropdownOpen);
   };
 
-  const categoryOptions = pathwayCategories.map((category) => (
-    <option key={category.id} value={category.name}>
-      {category.name}
-    </option>
-  ));
-
-  const subCategoryOptions = selectedCategory
-    ? subCategories[selectedCategory.name].map((subCategory) => (
-        <option key={subCategory} value={subCategory}>
-          {subCategory}
-        </option>
-      ))
-    : [];
-
   return (
-    <div>
+    <div className="root-layout">
       <Head>
         <title>Personalized Learning Pathways</title>
       </Head>
       <NextSeo title="Personalized Learning Pathways" />
       <MemoizedHeader
         navOpen={navOpen}
-        onNavToggle={handleNavToggle}
-        onCategoryDropdownToggle={handleCategoryDropdownToggle}
-        onSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
-        isCategoryDropdownOpen={isCategoryDropdownOpen}
-        isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
-        categoryOptions={categoryOptions}
-        subCategoryOptions={subCategoryOptions}
-        selectedCategory={selectedCategory}
-        selectedSubCategory={selectedSubCategory}
-        onCategorySelect={handleCategorySelect}
-        onSubCategorySelect={handleSubCategorySelect}
+        handleNavToggle={handleNavToggle}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
       />
-      <main>
-        <MemoizedPathwayFilter
-          filter={filter}
-          onFilterChange={handleFilterChange}
-          searchQuery={searchQuery}
-          onSearch={handleSearch}
-        />
-        <MemoizedPathwayCategories
-          pathwayCategories={pathwayCategories}
-          selectedCategory={selectedCategory}
-          selectedSubCategory={selectedSubCategory}
-        />
+      <div className="main-content">
+        <div className="pathway-filter-container">
+          <MemoizedPathwayFilter
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+            category={category}
+            handleCategoryChange={handleCategoryChange}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
+          <div className="category-dropdown">
+            <button
+              className="category-dropdown-toggle"
+              onClick={handleCategoryDropdownToggle}
+            >
+              {category || 'Select Category'}
+            </button>
+            {isCategoryDropdownOpen && (
+              <ul className="category-dropdown-list">
+                {pathwayCategories.map((category) => (
+                  <li key={category.id}>
+                    <button
+                      className="category-dropdown-item"
+                      onClick={() => handleCategorySelect(category.id)}
+                    >
+                      {category.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {selectedCategory && (
+            <div className="sub-category-dropdown">
+              <button
+                className="sub-category-dropdown-toggle"
+                onClick={handleSubCategoryDropdownToggle}
+              >
+                {selectedSubCategory || 'Select Sub-Category'}
+              </button>
+              {isSubCategoryDropdownOpen && (
+                <ul className="sub-category-dropdown-list">
+                  {subCategories[selectedCategory.name].map((subCategory) => (
+                    <li key={subCategory}>
+                      <button
+                        className="sub-category-dropdown-item"
+                        onClick={() => handleSubCategorySelect(subCategory)}
+                      >
+                        {subCategory}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="pathway-categories-container">
+          <MemoizedPathwayCategories
+            filter={filter}
+            category={category}
+            subCategory={selectedSubCategory}
+          />
+        </div>
         {children}
-      </main>
+      </div>
       <MemoizedFooter />
     </div>
   );

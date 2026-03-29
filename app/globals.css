@@ -58,6 +58,18 @@
     role: "application";
   }
 
+  header {
+    role: "banner";
+  }
+
+  nav {
+    role: "navigation";
+  }
+
+  main {
+    role: "main";
+  }
+
   a {
     color: var(--link-color);
     transition: color 0.2s ease-in-out;
@@ -137,6 +149,30 @@
     display: none;
   }
 
+  figure {
+    role: "figure";
+  }
+
+  figcaption {
+    role: "presentation";
+  }
+
+  section {
+    role: "region";
+  }
+
+  article {
+    role: "article";
+  }
+
+  aside {
+    role: "complementary";
+  }
+
+  footer {
+    role: "contentinfo";
+  }
+
   meta[name="title"] {
     content: "Personalized Learning Pathways | Adaptive Learning Platform for Career Growth";
   }
@@ -146,9 +182,5 @@
   }
 
   meta[name="keywords"] {
-    content: "personalized learning, adaptive learning, learning pathways, education technology, skills development, career growth, professional development, online learning, e-learning, educational technology, career advancement, lifelong learning";
-  }
-
-  meta[name="robots"] {
-    content: "index, follow";
+    content: "personalized learning, adaptive learning, learning pathways, education technology, skills development, career growth, professional development";
   }

@@ -12,6 +12,11 @@ import { NextSeo } from 'next-seo';
 import PathwayFilter from '../components/PathwayFilter';
 import PathwayCategories from '../components/PathwayCategories';
 
+const MemoizedHeader = React.memo(Header);
+const MemoizedFooter = React.memo(Footer);
+const MemoizedPathwayFilter = React.memo(PathwayFilter);
+const MemoizedPathwayCategories = React.memo(PathwayCategories);
+
 export default function RootLayout({
   children,
 }: {
@@ -91,40 +96,34 @@ export default function RootLayout({
         <title>Learn Tracker</title>
       </Head>
       <body>
-        <Header
+        <MemoizedHeader
           navOpen={navOpen}
-          onNavToggle={handleNavToggle}
-          onCategoryDropdownToggle={handleCategoryDropdownToggle}
-          onSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
+          handleNavToggle={handleNavToggle}
+          handleCategoryDropdownToggle={handleCategoryDropdownToggle}
+          handleSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
           isCategoryDropdownOpen={isCategoryDropdownOpen}
           isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
           pathwayCategories={pathwayCategories}
-          onCategorySelect={handleCategorySelect}
-          onSubCategorySelect={handleSubCategorySelect}
+          handleCategorySelect={handleCategorySelect}
+          handleSubCategorySelect={handleSubCategorySelect}
           subCategories={subCategories}
           selectedCategory={selectedCategory}
           selectedSubCategory={selectedSubCategory}
+          handleSearch={handleSearch}
           searchQuery={searchQuery}
-          onSearch={handleSearch}
         />
-        <main className="flex flex-col items-center justify-center min-h-screen">
-          <PathwayFilter
+        <main>
+          <MemoizedPathwayFilter
             filter={filter}
-            onFilterChange={handleFilterChange}
-            category={category}
-            onCategoryChange={handleCategoryChange}
+            handleFilterChange={handleFilterChange}
           />
-          <PathwayCategories
-            pathwayCategories={pathwayCategories}
-            onCategorySelect={handleCategorySelect}
-            selectedCategory={selectedCategory}
-            subCategories={subCategories}
-            onSubCategorySelect={handleSubCategorySelect}
-            selectedSubCategory={selectedSubCategory}
+          <MemoizedPathwayCategories
+            category={category}
+            handleCategoryChange={handleCategoryChange}
           />
           {children}
         </main>
-        <Footer />
+        <MemoizedFooter />
       </body>
     </html>
   );

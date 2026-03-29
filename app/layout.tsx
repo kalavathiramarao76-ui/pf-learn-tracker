@@ -86,44 +86,57 @@ export default function RootLayout({
     setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
   };
 
+  const handleSubCategoryDropdownToggle = () => {
+    setIsSubCategoryDropdownOpen(!isSubCategoryDropdownOpen);
+  };
+
+  const categoryOptions = pathwayCategories.map((category) => (
+    <option key={category.id} value={category.name}>
+      {category.name}
+    </option>
+  ));
+
+  const subCategoryOptions = selectedCategory
+    ? subCategories[selectedCategory.name].map((subCategory) => (
+        <option key={subCategory} value={subCategory}>
+          {subCategory}
+        </option>
+      ))
+    : [];
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div>
       <Head>
         <title>Personalized Learning Pathways</title>
-        <meta name="description" content="Personalized Learning Pathways" />
       </Head>
-      <NextSeo title="Personalized Learning Pathways" description="Personalized Learning Pathways" />
+      <NextSeo title="Personalized Learning Pathways" />
       <MemoizedHeader
         navOpen={navOpen}
-        handleNavToggle={handleNavToggle}
+        onNavToggle={handleNavToggle}
+        onCategoryDropdownToggle={handleCategoryDropdownToggle}
+        onSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
         isCategoryDropdownOpen={isCategoryDropdownOpen}
-        handleCategoryDropdownToggle={handleCategoryDropdownToggle}
         isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
-        handleSearch={handleSearch}
-        searchQuery={searchQuery}
-        handleCategorySelect={handleCategorySelect}
-        handleSubCategorySelect={handleSubCategorySelect}
+        categoryOptions={categoryOptions}
+        subCategoryOptions={subCategoryOptions}
         selectedCategory={selectedCategory}
         selectedSubCategory={selectedSubCategory}
-        pathwayCategories={pathwayCategories}
-        subCategories={subCategories}
+        onCategorySelect={handleCategorySelect}
+        onSubCategorySelect={handleSubCategorySelect}
       />
-      <main className="flex-1">
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
-          <MemoizedPathwayFilter
-            filter={filter}
-            handleFilterChange={handleFilterChange}
-          />
-          <MemoizedPathwayCategories
-            category={category}
-            handleCategoryChange={handleCategoryChange}
-            pathwayCategories={pathwayCategories}
-            subCategories={subCategories}
-            selectedSubCategory={selectedSubCategory}
-            handleSubCategorySelect={handleSubCategorySelect}
-          />
-          {children}
-        </div>
+      <main>
+        <MemoizedPathwayFilter
+          filter={filter}
+          onFilterChange={handleFilterChange}
+          searchQuery={searchQuery}
+          onSearch={handleSearch}
+        />
+        <MemoizedPathwayCategories
+          pathwayCategories={pathwayCategories}
+          selectedCategory={selectedCategory}
+          selectedSubCategory={selectedSubCategory}
+        />
+        {children}
       </main>
       <MemoizedFooter />
     </div>

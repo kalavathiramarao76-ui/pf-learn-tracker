@@ -72,22 +72,19 @@ export default function DashboardPage() {
     const recommendedPathways = pathways.filter((pathway) => {
       const pathwayCategory = pathway.category;
       const pathwayLearningStyle = pathway.learningStyle;
+      const pathwayDifficulty = pathway.difficulty;
 
-      const isCategoryMatch = userInterests.includes(pathwayCategory);
-      const isLearningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
+      const interestMatch = userInterests.includes(pathwayCategory);
+      const progressMatch = userProgress.includes(pathway.difficulty);
+      const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
 
-      const pathwayProgress = userProgress.reduce((acc, curr) => {
-        if (curr.category === pathwayCategory) {
-          acc += curr.progress;
-        }
-        return acc;
-      }, 0);
+      const interestWeight = 0.4;
+      const progressWeight = 0.3;
+      const learningStyleWeight = 0.3;
 
-      const pathwayScore = isCategoryMatch ? 1 : 0.5;
-      pathwayScore += isLearningStyleMatch ? 1 : 0.5;
-      pathwayScore += pathwayProgress / 100;
+      const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
 
-      return pathwayScore > 1.5;
+      return score >= 0.5;
     });
 
     return recommendedPathways;
@@ -99,8 +96,14 @@ export default function DashboardPage() {
       <PathwayFilter filterBy={filterBy} setFilterBy={setFilterBy} />
       <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
+      {recommendedPathways.length > 0 && (
+        <div>
+          <h2>Recommended Pathways</h2>
+          <PathwayList pathways={recommendedPathways} handlePathwayClick={handlePathwayClick} />
+        </div>
+      )}
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
-      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
+      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />
     </div>
   );
 }

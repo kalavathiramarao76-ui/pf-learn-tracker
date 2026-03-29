@@ -29,6 +29,12 @@ export default function RootLayout({
   ]);
   const [searchQuery, setSearchQuery] = useState('');
   const [navOpen, setNavOpen] = useState(false);
+  const [subCategories, setSubCategories] = useState({
+    Technology: ['Web Development', 'Data Science', 'Artificial Intelligence'],
+    Business: ['Marketing', 'Finance', 'Management'],
+    'Creative Skills': ['Graphic Design', 'Digital Photography', 'Writing'],
+  });
+  const [selectedSubCategory, setSelectedSubCategory] = useState('');
 
   useEffect(() => {
     setTheme(darkMode ? 'dark' : 'light');
@@ -40,6 +46,7 @@ export default function RootLayout({
 
   const handleCategoryChange = (category: string) => {
     setCategory(category);
+    setSelectedSubCategory('');
   };
 
   const handleCategorySelect = (categoryId: number) => {
@@ -48,7 +55,12 @@ export default function RootLayout({
     );
     if (selectedCategory) {
       setCategory(selectedCategory.name);
+      setSelectedSubCategory('');
     }
+  };
+
+  const handleSubCategorySelect = (subCategory: string) => {
+    setSelectedSubCategory(subCategory);
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,33 +92,24 @@ export default function RootLayout({
         <Header
           navOpen={navOpen}
           handleNavToggle={handleNavToggle}
-          searchQuery={searchQuery}
           handleSearch={handleSearch}
+          searchQuery={searchQuery}
         />
-        <nav className={`nav ${navOpen ? 'nav-open' : ''}`}>
-          <ul>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/pathways">Pathways</Link>
-            </li>
-            <li>
-              <Link href="/courses">Courses</Link>
-            </li>
-          </ul>
+        <main>
           <PathwayFilter
             filter={filter}
             handleFilterChange={handleFilterChange}
-            categories={pathwayCategories}
-            handleCategorySelect={handleCategorySelect}
+            category={category}
+            handleCategoryChange={handleCategoryChange}
+            subCategories={subCategories[category] || []}
+            selectedSubCategory={selectedSubCategory}
+            handleSubCategorySelect={handleSubCategorySelect}
           />
           <PathwayCategories
-            categories={pathwayCategories}
+            pathwayCategories={pathwayCategories}
             handleCategorySelect={handleCategorySelect}
+            selectedCategory={category}
           />
-        </nav>
-        <main>
           {children}
         </main>
         <Footer />

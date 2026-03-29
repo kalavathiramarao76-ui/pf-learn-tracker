@@ -89,84 +89,51 @@ export default function RootLayout({
   };
 
   return (
-    <div className="root-layout">
-      <Head>
-        <title>Personalized Learning Pathways</title>
-      </Head>
+    <div className="flex flex-col min-h-screen">
       <NextSeo title="Personalized Learning Pathways" />
       <MemoizedHeader
         navOpen={navOpen}
         handleNavToggle={handleNavToggle}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
+        isCategoryDropdownOpen={isCategoryDropdownOpen}
+        handleCategoryDropdownToggle={handleCategoryDropdownToggle}
+        isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
+        handleSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
+        selectedCategory={selectedCategory}
+        handleCategorySelect={handleCategorySelect}
+        selectedSubCategory={selectedSubCategory}
+        handleSubCategorySelect={handleSubCategorySelect}
+        subCategories={subCategories}
+        pathwayCategories={pathwayCategories}
+        category={category}
+        handleCategoryChange={handleCategoryChange}
+        filter={filter}
+        handleFilterChange={handleFilterChange}
+        searchQuery={searchQuery}
+        handleSearch={handleSearch}
       />
-      <div className="main-content">
-        <div className="pathway-filter-container">
-          <MemoizedPathwayFilter
-            filter={filter}
-            handleFilterChange={handleFilterChange}
-            category={category}
-            handleCategoryChange={handleCategoryChange}
-            searchQuery={searchQuery}
-            handleSearch={handleSearch}
-          />
-          <div className="category-dropdown">
-            <button
-              className="category-dropdown-toggle"
-              onClick={handleCategoryDropdownToggle}
-            >
-              {category || 'Select Category'}
-            </button>
-            {isCategoryDropdownOpen && (
-              <ul className="category-dropdown-list">
-                {pathwayCategories.map((category) => (
-                  <li key={category.id}>
-                    <button
-                      className="category-dropdown-item"
-                      onClick={() => handleCategorySelect(category.id)}
-                    >
-                      {category.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          {selectedCategory && (
-            <div className="sub-category-dropdown">
-              <button
-                className="sub-category-dropdown-toggle"
-                onClick={handleSubCategoryDropdownToggle}
-              >
-                {selectedSubCategory || 'Select Sub-Category'}
-              </button>
-              {isSubCategoryDropdownOpen && (
-                <ul className="sub-category-dropdown-list">
-                  {subCategories[selectedCategory.name].map((subCategory) => (
-                    <li key={subCategory}>
-                      <button
-                        className="sub-category-dropdown-item"
-                        onClick={() => handleSubCategorySelect(subCategory)}
-                      >
-                        {subCategory}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="pathway-categories-container">
-          <MemoizedPathwayCategories
-            filter={filter}
-            category={category}
-            subCategory={selectedSubCategory}
-          />
-        </div>
+      <main className="flex-1">
         {children}
-      </div>
+      </main>
       <MemoizedFooter />
+      <MemoizedPathwayFilter
+        filter={filter}
+        handleFilterChange={handleFilterChange}
+        category={category}
+        handleCategoryChange={handleCategoryChange}
+        subCategories={subCategories}
+        selectedSubCategory={selectedSubCategory}
+        handleSubCategorySelect={handleSubCategorySelect}
+        searchQuery={searchQuery}
+        handleSearch={handleSearch}
+      />
+      <MemoizedPathwayCategories
+        pathwayCategories={pathwayCategories}
+        selectedCategory={selectedCategory}
+        handleCategorySelect={handleCategorySelect}
+        subCategories={subCategories}
+        selectedSubCategory={selectedSubCategory}
+        handleSubCategorySelect={handleSubCategorySelect}
+      />
     </div>
   );
 }

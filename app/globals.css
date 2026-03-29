@@ -178,23 +178,11 @@
   }
 
   meta[name="description"] {
-    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your full potential with our adaptive learning platform, designed to help you achieve career growth and success.";
+    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your full potential with our adaptive learning platform.";
   }
 
   meta[name="keywords"] {
-    content: "personalized learning, adaptive learning, career growth, professional development, online learning platform";
-  }
-
-  meta[name="robots"] {
-    content: "index, follow";
-  }
-
-  meta[name="author"] {
-    content: "Personalized Learning Pathways Team";
-  }
-
-  meta[name="viewport"] {
-    content: "width=device-width, initial-scale=1.0";
+    content: "personalized learning, adaptive learning, career growth, professional development, online learning";
   }
 
   meta[property="og:title"] {
@@ -202,34 +190,29 @@
   }
 
   meta[property="og:description"] {
-    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your full potential with our adaptive learning platform, designed to help you achieve career growth and success.";
+    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your full potential with our adaptive learning platform.";
   }
 
   meta[property="og:image"] {
-    content: "/images/learning-pathways-logo.png";
+    content: "/images/learning-pathways.jpg";
   }
 
   meta[property="og:url"] {
-    content: "https://www.personalizedlearningpathways.com";
+    content: "https://example.com/learning-pathways";
   }
 
-  meta[property="og:site_name"] {
-    content: "Personalized Learning Pathways";
+  meta[name="twitter:card"] {
+    content: "summary_large_image";
   }
 
-  meta[property="twitter:card"] {
-    content: "summary";
-  }
-
-  meta[property="twitter:title"] {
+  meta[name="twitter:title"] {
     content: "Personalized Learning Pathways | Adaptive Learning for Career Growth and Development";
   }
 
-  meta[property="twitter:description"] {
-    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your full potential with our adaptive learning platform, designed to help you achieve career growth and success.";
+  meta[name="twitter:description"] {
+    content: "Discover personalized learning pathways tailored to your unique needs and goals. Unlock your full potential with our adaptive learning platform.";
   }
 
-  meta[property="twitter:image"] {
-    content: "/images/learning-pathways-logo.png";
+  meta[name="twitter:image"] {
+    content: "/images/learning-pathways.jpg";
   }
-}

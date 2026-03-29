@@ -90,70 +90,45 @@ export default function RootLayout({
     setIsSubCategoryDropdownOpen(!isSubCategoryDropdownOpen);
   };
 
-  const categoryDropdown = (
-    <div className="category-dropdown">
-      <button
-        className="category-dropdown-button"
-        onClick={handleCategoryDropdownToggle}
-      >
-        {selectedCategory ? selectedCategory.name : 'Select Category'}
-      </button>
-      {isCategoryDropdownOpen && (
-        <ul className="category-dropdown-list">
-          {pathwayCategories.map((category) => (
-            <li key={category.id}>
-              <button
-                className="category-dropdown-item"
-                onClick={() => handleCategorySelect(category.id)}
-              >
-                {category.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-
-  const subCategoryDropdown = (
-    <div className="sub-category-dropdown">
-      <button
-        className="sub-category-dropdown-button"
-        onClick={handleSubCategoryDropdownToggle}
-      >
-        {selectedSubCategory ? selectedSubCategory : 'Select Sub Category'}
-      </button>
-      {isSubCategoryDropdownOpen && selectedCategory && (
-        <ul className="sub-category-dropdown-list">
-          {subCategories[selectedCategory.name].map((subCategory) => (
-            <li key={subCategory}>
-              <button
-                className="sub-category-dropdown-item"
-                onClick={() => handleSubCategorySelect(subCategory)}
-              >
-                {subCategory}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-
   return (
-    <div className="root-layout">
-      <Head>
-        <title>Personalized Learning Pathways</title>
-      </Head>
+    <div className="flex flex-col min-h-screen">
       <NextSeo title="Personalized Learning Pathways" />
       <MemoizedHeader
         navOpen={navOpen}
-        handleNavToggle={handleNavToggle}
-        categoryDropdown={categoryDropdown}
-        subCategoryDropdown={subCategoryDropdown}
+        onNavToggle={handleNavToggle}
+        onCategoryDropdownToggle={handleCategoryDropdownToggle}
+        onSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
+        isCategoryDropdownOpen={isCategoryDropdownOpen}
+        isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
+        pathwayCategories={pathwayCategories}
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+        subCategories={subCategories}
+        selectedSubCategory={selectedSubCategory}
+        onSubCategorySelect={handleSubCategorySelect}
+        onSearch={handleSearch}
+        searchQuery={searchQuery}
       />
-      <main className="main-content">
-        {children}
+      <main className="flex-1">
+        <div className="container mx-auto p-4">
+          <div className="flex flex-wrap justify-center">
+            <MemoizedPathwayFilter
+              filter={filter}
+              onFilterChange={handleFilterChange}
+              category={category}
+              onCategoryChange={handleCategoryChange}
+            />
+            <MemoizedPathwayCategories
+              pathwayCategories={pathwayCategories}
+              selectedCategory={selectedCategory}
+              onCategorySelect={handleCategorySelect}
+              subCategories={subCategories}
+              selectedSubCategory={selectedSubCategory}
+              onSubCategorySelect={handleSubCategorySelect}
+            />
+          </div>
+          {children}
+        </div>
       </main>
       <MemoizedFooter />
     </div>

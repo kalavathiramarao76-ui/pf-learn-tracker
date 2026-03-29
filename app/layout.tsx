@@ -35,6 +35,9 @@ export default function RootLayout({
     'Creative Skills': ['Graphic Design', 'Digital Photography', 'Writing'],
   });
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isSubCategoryDropdownOpen, setIsSubCategoryDropdownOpen] = useState(false);
 
   useEffect(() => {
     setTheme(darkMode ? 'dark' : 'light');
@@ -55,12 +58,15 @@ export default function RootLayout({
     );
     if (selectedCategory) {
       setCategory(selectedCategory.name);
+      setSelectedCategory(selectedCategory);
       setSelectedSubCategory('');
+      setIsCategoryDropdownOpen(false);
     }
   };
 
   const handleSubCategorySelect = (subCategory: string) => {
     setSelectedSubCategory(subCategory);
+    setIsSubCategoryDropdownOpen(false);
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +75,14 @@ export default function RootLayout({
 
   const handleNavToggle = () => {
     setNavOpen(!navOpen);
+  };
+
+  const handleCategoryDropdownToggle = () => {
+    setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
+  };
+
+  const handleSubCategoryDropdownToggle = () => {
+    setIsSubCategoryDropdownOpen(!isSubCategoryDropdownOpen);
   };
 
   return (
@@ -81,34 +95,34 @@ export default function RootLayout({
         />
         <meta
           name="keywords"
-          content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, educational technology, career development, online courses, certification programs, lifelong learning, skill development, career advancement, online education, learning analytics, artificial intelligence in education"
+          content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, education"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon" />
-        <link rel="icon" href="/favicon-32x32.ico" sizes="32x32" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/favicon-180x180.ico" sizes="180x180" type="image/x-icon" />
       </Head>
       <body>
         <Header
           navOpen={navOpen}
           handleNavToggle={handleNavToggle}
-          handleSearch={handleSearch}
-          searchQuery={searchQuery}
+          isCategoryDropdownOpen={isCategoryDropdownOpen}
+          handleCategoryDropdownToggle={handleCategoryDropdownToggle}
+          isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
+          handleSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
+          selectedCategory={selectedCategory}
+          pathwayCategories={pathwayCategories}
+          handleCategorySelect={handleCategorySelect}
+          subCategories={subCategories}
+          selectedSubCategory={selectedSubCategory}
+          handleSubCategorySelect={handleSubCategorySelect}
         />
         <main>
           <PathwayFilter
             filter={filter}
             handleFilterChange={handleFilterChange}
-            category={category}
-            handleCategoryChange={handleCategoryChange}
-            subCategories={subCategories[category] || []}
-            selectedSubCategory={selectedSubCategory}
-            handleSubCategorySelect={handleSubCategorySelect}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
           />
           <PathwayCategories
-            pathwayCategories={pathwayCategories}
-            handleCategorySelect={handleCategorySelect}
-            selectedCategory={category}
+            category={category}
+            handleCategoryChange={handleCategoryChange}
           />
           {children}
         </main>

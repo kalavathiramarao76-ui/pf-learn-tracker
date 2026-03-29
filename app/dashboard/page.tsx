@@ -72,22 +72,50 @@ export default function DashboardPage() {
     const recommendedPathways = pathways.filter((pathway) => {
       const pathwayCategory = pathway.category;
       const pathwayLearningStyle = pathway.learningStyle;
-      const pathwayDifficulty = pathway.difficulty;
 
-      const interestMatch = userInterests.includes(pathwayCategory);
-      const progressMatch = userProgress.includes(pathway.difficulty);
-      const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
+      const isCategoryMatch = userInterests.includes(pathwayCategory);
+      const isLearningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
 
-      const interestWeight = 0.4;
-      const progressWeight = 0.3;
-      const learningStyleWeight = 0.3;
+      const pathwayProgress = userProgress.reduce((acc, curr) => {
+        if (curr.category === pathwayCategory) {
+          acc += curr.progress;
+        }
+        return acc;
+      }, 0);
 
-      const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
+      const pathwayScore = isCategoryMatch ? 1 : 0;
+      pathwayScore += isLearningStyleMatch ? 1 : 0;
+      pathwayScore += pathwayProgress / 100;
 
-      return score >= 0.5;
+      return pathwayScore > 0;
     });
 
-    return recommendedPathways;
+    return recommendedPathways.sort((a, b) => {
+      const aScore = calculatePathwayScore(a, userInterests, userLearningStyle, userProgress);
+      const bScore = calculatePathwayScore(b, userInterests, userLearningStyle, userProgress);
+      return bScore - aScore;
+    });
+  };
+
+  const calculatePathwayScore = (pathway, userInterests, userLearningStyle, userProgress) => {
+    const pathwayCategory = pathway.category;
+    const pathwayLearningStyle = pathway.learningStyle;
+
+    const isCategoryMatch = userInterests.includes(pathwayCategory);
+    const isLearningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
+
+    const pathwayProgress = userProgress.reduce((acc, curr) => {
+      if (curr.category === pathwayCategory) {
+        acc += curr.progress;
+      }
+      return acc;
+    }, 0);
+
+    const pathwayScore = isCategoryMatch ? 1 : 0;
+    pathwayScore += isLearningStyleMatch ? 1 : 0;
+    pathwayScore += pathwayProgress / 100;
+
+    return pathwayScore;
   };
 
   return (
@@ -102,8 +130,8 @@ export default function DashboardPage() {
           <PathwayList pathways={recommendedPathways} handlePathwayClick={handlePathwayClick} />
         </div>
       )}
-      <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
-      <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} />
+      {isCreatingPathway && <CreatePathwayForm setIsCreatingPathway={setIsCreatingPathway} />}
+      {certificateModalOpen && <CertificateModal certificatePathway={certificatePathway} setCertificateModalOpen={setCertificateModalOpen} />}
     </div>
   );
 }

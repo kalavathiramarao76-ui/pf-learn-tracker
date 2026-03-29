@@ -150,43 +150,23 @@
   }
 
   meta[name="robots"] {
-    content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    content: "index, follow";
   }
 
-  meta[name="viewport"] {
-    content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
-  }
-
-  meta[name="author"] {
-    content: "Your Company Name";
-  }
-
-  meta[property="og:title"] {
+  meta[name="og:title"] {
     content: "Personalized Learning Pathways | Unlock Your Potential";
   }
 
-  meta[property="og:description"] {
+  meta[name="og:description"] {
     content: "Discover personalized learning pathways tailored to your unique needs, interests, and goals. Enhance your skills and knowledge with our innovative adaptive learning platform.";
   }
 
-  meta[property="og:url"] {
-    content: "https://yourwebsite.com";
+  meta[name="og:image"] {
+    content: "/images/learning-pathways.jpg";
   }
 
-  meta[property="og:image"] {
-    content: "https://yourwebsite.com/image.jpg";
-  }
-
-  meta[property="og:site_name"] {
-    content: "Your Company Name";
-  }
-
-  meta[property="og:locale"] {
-    content: "en_US";
-  }
-
-  meta[property="og:type"] {
-    content: "website";
+  meta[name="og:url"] {
+    content: "https://example.com/learning-pathways";
   }
 
   meta[name="twitter:card"] {
@@ -202,10 +182,6 @@
   }
 
   meta[name="twitter:image"] {
-    content: "https://yourwebsite.com/image.jpg";
-  }
-
-  meta[name="twitter:site"] {
-    content: "@yourcompany";
+    content: "/images/learning-pathways.jpg";
   }
 }

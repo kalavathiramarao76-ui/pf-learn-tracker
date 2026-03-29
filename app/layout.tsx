@@ -88,41 +88,39 @@ export default function RootLayout({
   return (
     <html lang="en" className={theme}>
       <Head>
-        <title>Learn Tracker - Personalized Learning Pathways</title>
-        <meta
-          name="description"
-          content="A comprehensive online learning platform offering personalized learning pathways, adaptive assessments, and expert-led courses to help students and professionals achieve their goals in various fields, including technology, business, and creative skills."
-        />
-        <meta
-          name="keywords"
-          content="personalized learning, online learning platforms, learning management system, professional development, skill acquisition, e-learning, adaptive learning, education"
-        />
+        <title>Learn Tracker</title>
       </Head>
       <body>
         <Header
           navOpen={navOpen}
-          handleNavToggle={handleNavToggle}
+          onNavToggle={handleNavToggle}
+          onCategoryDropdownToggle={handleCategoryDropdownToggle}
+          onSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
           isCategoryDropdownOpen={isCategoryDropdownOpen}
-          handleCategoryDropdownToggle={handleCategoryDropdownToggle}
           isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
-          handleSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
-          selectedCategory={selectedCategory}
           pathwayCategories={pathwayCategories}
-          handleCategorySelect={handleCategorySelect}
+          onCategorySelect={handleCategorySelect}
+          onSubCategorySelect={handleSubCategorySelect}
           subCategories={subCategories}
+          selectedCategory={selectedCategory}
           selectedSubCategory={selectedSubCategory}
-          handleSubCategorySelect={handleSubCategorySelect}
+          searchQuery={searchQuery}
+          onSearch={handleSearch}
         />
-        <main>
+        <main className="flex flex-col items-center justify-center min-h-screen">
           <PathwayFilter
             filter={filter}
-            handleFilterChange={handleFilterChange}
-            searchQuery={searchQuery}
-            handleSearch={handleSearch}
+            onFilterChange={handleFilterChange}
+            category={category}
+            onCategoryChange={handleCategoryChange}
           />
           <PathwayCategories
-            category={category}
-            handleCategoryChange={handleCategoryChange}
+            pathwayCategories={pathwayCategories}
+            onCategorySelect={handleCategorySelect}
+            selectedCategory={selectedCategory}
+            subCategories={subCategories}
+            onSubCategorySelect={handleSubCategorySelect}
+            selectedSubCategory={selectedSubCategory}
           />
           {children}
         </main>

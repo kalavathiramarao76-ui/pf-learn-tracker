@@ -90,41 +90,72 @@ export default function RootLayout({
     setIsSubCategoryDropdownOpen(!isSubCategoryDropdownOpen);
   };
 
+  const categoryDropdown = (
+    <div className="category-dropdown">
+      <button
+        className="category-dropdown-button"
+        onClick={handleCategoryDropdownToggle}
+      >
+        {selectedCategory ? selectedCategory.name : 'Select Category'}
+      </button>
+      {isCategoryDropdownOpen && (
+        <ul className="category-dropdown-list">
+          {pathwayCategories.map((category) => (
+            <li key={category.id}>
+              <button
+                className="category-dropdown-item"
+                onClick={() => handleCategorySelect(category.id)}
+              >
+                {category.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
+  const subCategoryDropdown = (
+    <div className="sub-category-dropdown">
+      <button
+        className="sub-category-dropdown-button"
+        onClick={handleSubCategoryDropdownToggle}
+      >
+        {selectedSubCategory ? selectedSubCategory : 'Select Sub Category'}
+      </button>
+      {isSubCategoryDropdownOpen && selectedCategory && (
+        <ul className="sub-category-dropdown-list">
+          {subCategories[selectedCategory.name].map((subCategory) => (
+            <li key={subCategory}>
+              <button
+                className="sub-category-dropdown-item"
+                onClick={() => handleSubCategorySelect(subCategory)}
+              >
+                {subCategory}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
   return (
-    <html lang="en" className={theme}>
+    <div className="root-layout">
       <Head>
-        <title>Learn Tracker</title>
+        <title>Personalized Learning Pathways</title>
       </Head>
-      <body>
-        <MemoizedHeader
-          navOpen={navOpen}
-          handleNavToggle={handleNavToggle}
-          handleCategoryDropdownToggle={handleCategoryDropdownToggle}
-          handleSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
-          isCategoryDropdownOpen={isCategoryDropdownOpen}
-          isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
-          pathwayCategories={pathwayCategories}
-          handleCategorySelect={handleCategorySelect}
-          handleSubCategorySelect={handleSubCategorySelect}
-          subCategories={subCategories}
-          selectedCategory={selectedCategory}
-          selectedSubCategory={selectedSubCategory}
-          handleSearch={handleSearch}
-          searchQuery={searchQuery}
-        />
-        <main>
-          <MemoizedPathwayFilter
-            filter={filter}
-            handleFilterChange={handleFilterChange}
-          />
-          <MemoizedPathwayCategories
-            category={category}
-            handleCategoryChange={handleCategoryChange}
-          />
-          {children}
-        </main>
-        <MemoizedFooter />
-      </body>
-    </html>
+      <NextSeo title="Personalized Learning Pathways" />
+      <MemoizedHeader
+        navOpen={navOpen}
+        handleNavToggle={handleNavToggle}
+        categoryDropdown={categoryDropdown}
+        subCategoryDropdown={subCategoryDropdown}
+      />
+      <main className="main-content">
+        {children}
+      </main>
+      <MemoizedFooter />
+    </div>
   );
 }

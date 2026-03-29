@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
       const score = (interestMatch ? interestWeight : 0) + (progressMatch ? progressWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
 
-      return score > 0.5;
+      return score >= 0.5;
     });
 
     return recommendedPathways;
@@ -100,12 +100,12 @@ export default function DashboardPage() {
       const behaviorMatch = userBehavior.includes(pathwayBehavior);
       const learningStyleMatch = userLearningStyle.includes(pathwayLearningStyle);
 
-      const behaviorWeight = 0.6;
-      const learningStyleWeight = 0.4;
+      const behaviorWeight = 0.5;
+      const learningStyleWeight = 0.5;
 
       const score = (behaviorMatch ? behaviorWeight : 0) + (learningStyleMatch ? learningStyleWeight : 0);
 
-      return score > 0.5;
+      return score >= 0.5;
     });
 
     return recommendedPathways;
@@ -130,9 +130,9 @@ export default function DashboardPage() {
   return (
     <div>
       <SEO title="Personalized Learning Pathways" />
+      <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <PathwayFilter filterBy={filterBy} setFilterBy={setFilterBy} />
       <PathwaySort sortBy={sortBy} setSortBy={setSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} />
-      <PathwayList pathways={sortedAndFilteredPathways} handlePathwayClick={handlePathwayClick} />
       <CreatePathwayForm isCreatingPathway={isCreatingPathway} setIsCreatingPathway={setIsCreatingPathway} />
       <CertificateModal certificateModalOpen={certificateModalOpen} setCertificateModalOpen={setCertificateModalOpen} certificatePathway={certificatePathway} setCertificatePathway={setCertificatePathway} />
     </div>

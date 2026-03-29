@@ -86,47 +86,42 @@ export default function RootLayout({
     setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
   };
 
-  const handleSubCategoryDropdownToggle = () => {
-    setIsSubCategoryDropdownOpen(!isSubCategoryDropdownOpen);
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
-      <NextSeo title="Personalized Learning Pathways" />
+      <Head>
+        <title>Personalized Learning Pathways</title>
+        <meta name="description" content="Personalized Learning Pathways" />
+      </Head>
+      <NextSeo title="Personalized Learning Pathways" description="Personalized Learning Pathways" />
       <MemoizedHeader
         navOpen={navOpen}
-        onNavToggle={handleNavToggle}
-        onCategoryDropdownToggle={handleCategoryDropdownToggle}
-        onSubCategoryDropdownToggle={handleSubCategoryDropdownToggle}
+        handleNavToggle={handleNavToggle}
         isCategoryDropdownOpen={isCategoryDropdownOpen}
+        handleCategoryDropdownToggle={handleCategoryDropdownToggle}
         isSubCategoryDropdownOpen={isSubCategoryDropdownOpen}
-        pathwayCategories={pathwayCategories}
-        selectedCategory={selectedCategory}
-        onCategorySelect={handleCategorySelect}
-        subCategories={subCategories}
-        selectedSubCategory={selectedSubCategory}
-        onSubCategorySelect={handleSubCategorySelect}
-        onSearch={handleSearch}
+        handleSearch={handleSearch}
         searchQuery={searchQuery}
+        handleCategorySelect={handleCategorySelect}
+        handleSubCategorySelect={handleSubCategorySelect}
+        selectedCategory={selectedCategory}
+        selectedSubCategory={selectedSubCategory}
+        pathwayCategories={pathwayCategories}
+        subCategories={subCategories}
       />
       <main className="flex-1">
-        <div className="container mx-auto p-4">
-          <div className="flex flex-wrap justify-center">
-            <MemoizedPathwayFilter
-              filter={filter}
-              onFilterChange={handleFilterChange}
-              category={category}
-              onCategoryChange={handleCategoryChange}
-            />
-            <MemoizedPathwayCategories
-              pathwayCategories={pathwayCategories}
-              selectedCategory={selectedCategory}
-              onCategorySelect={handleCategorySelect}
-              subCategories={subCategories}
-              selectedSubCategory={selectedSubCategory}
-              onSubCategorySelect={handleSubCategorySelect}
-            />
-          </div>
+        <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
+          <MemoizedPathwayFilter
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+          />
+          <MemoizedPathwayCategories
+            category={category}
+            handleCategoryChange={handleCategoryChange}
+            pathwayCategories={pathwayCategories}
+            subCategories={subCategories}
+            selectedSubCategory={selectedSubCategory}
+            handleSubCategorySelect={handleSubCategorySelect}
+          />
           {children}
         </div>
       </main>
